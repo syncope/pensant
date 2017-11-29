@@ -18,9 +18,12 @@
 
 #  the master interface class needed for gui and everything else
 
+from fitModels import FitModels
+
+
 
 def CurveFitting():
-    def  __init__(self, data):
+    def  __init__(self, data=None):
         self._data = data
         self._model = None
         self._parameters = None
@@ -45,3 +48,5 @@ def CurveFitting():
         '''If data and model defined, perform the fit. Returns result.'''
         pass
 
+    def setupFromJSON(self, jsonobject):
+        pass

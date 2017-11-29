@@ -23,7 +23,7 @@ from lmfit.models import PseudoVoigtModel, LorentzianModel, GaussianModel
 from lmfit.models import ConstantModel, LinearModel, QuadraticModel
 from lmfit.models import PolynomialModel, ExponentialModel
 
-fitModels = { "constantModel" : ConstantModel(),
+FitModels = { "constantModel" : ConstantModel(),
               "linearModel" : LinearModel(),
               "quadraticModel" : QuadraticModel(),
               "gaussianModel" : GaussianModel(),
