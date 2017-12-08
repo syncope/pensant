@@ -47,6 +47,3 @@ def CurveFitting():
     def fit(self):
         '''If data and model defined, perform the fit. Returns result.'''
         pass
-
-    def setupFromJSON(self, jsonobject):
-        pass
