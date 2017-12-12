@@ -18,7 +18,7 @@
 
 # model definitions, just take what's predefined in lmfit
 
-from lmfit import  Model
+from lmfit import Model
 from lmfit.models import PseudoVoigtModel, LorentzianModel, GaussianModel
 from lmfit.models import ConstantModel, LinearModel, QuadraticModel
 from lmfit.models import PolynomialModel, ExponentialModel
@@ -28,6 +28,7 @@ class fitParameter():
     '''Abstract definition of a fit parameter interface.'''
 
     def __init__(self, obj):
+        '''Also serves as a check: there must be five components!'''
         try:
             self._name = obj["name"]
             self._value = obj["value"]
@@ -52,8 +53,8 @@ class fitParameter():
     def max(self):
         return self._max
 
-
 class iModelDescription():
+    '''A fit model is qualified by its parameters, this is the prototype.'''
 
     def __init__(self):
         self._model = None
@@ -65,7 +66,7 @@ class iModelDescription():
 
     def initialize(self, configDict):
         '''Create the map of parameters from a dictionary.
-           First checks for number of elements, then uses the given dictionary to create actual parameter objects.'''
+            First checks for number of elements, then uses the given dictionary to create actual parameter objects.'''
         
         if len(configDict) != self._nop:
             raise TypeError("[ModelDescription]: The chosen model has a different number of parameters than supplied.")
@@ -91,7 +92,6 @@ class constant(iModelDescription):
         self._model = ConstantModel()
         self._nop = 1
         self._paramnames = ('c')
-
 
 class linear(iModelDescription):
 
