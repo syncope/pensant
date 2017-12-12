@@ -21,26 +21,25 @@
 from fitModels import FitModels
 
 
-
 def CurveFitting():
-    def  __init__(self, data=None):
-        self._data = data
+    def __init__(self):
         self._model = None
         self._parameters = None
         pass
 
-    def plot(self):
-        '''GUI functionality'''
-        pass
+    #~ def plot(self):
+    #~ '''GUI functionality'''
+    #~ pass
 
-    def chooseModel(self, model=''):
+    def chooseModel(self, model=None):
         '''Choose a model from the list of available models.'''
-        pass
+        self._model = FitModels[model]
 
     def getParameters(self):
+		
         '''Returns the list of parameters.'''
-        pass
-
+        return self._parameters
+		
     def setParameter(self, identifier, value):
         pass
 
