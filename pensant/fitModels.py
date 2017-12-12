@@ -81,6 +81,9 @@ class iModelDescription():
         for name, fitparam in self._parameters.items():
             modelparameters[name].set(value=fitparam.value(), vary=fitparam.variable(), min=fitparam.min(), max=fitparam.max())
 
+    def getParameterNames(self):
+        return self._paramnames
+
 class constant(iModelDescription):
 
     def __init__(self):

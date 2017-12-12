@@ -18,31 +18,37 @@
 
 #  the master interface class needed for gui and everything else
 
-from fitModels import FitModels
+import fitModels
 
 
-
-def CurveFitting():
-    def  __init__(self, data=None):
-        self._data = data
+class CurveFitting():
+    def  __init__(self):
+        self._data = None
         self._model = None
         self._parameters = None
-        pass
 
-    def plot(self):
-        '''GUI functionality'''
-        pass
+    #~ def plot(self):
+        #~ '''GUI functionality'''
+        #~ pass
 
-    def chooseModel(self, model=''):
+    def chooseModel(self, model=None):
         '''Choose a model from the list of available models.'''
-        pass
+        try:
+            self._model = fitModels.FitModels[model]
+        except KeyError("Chosen model: " + str(model) + " does not exist. Exiting."):
+            exit()
 
-    def getParameters(self):
+    def getParameterNames(self):
         '''Returns the list of parameters.'''
-        pass
+        return self._model.getParameterNames()
 
-    def setParameter(self, identifier, value):
-        pass
+    def setParameters(self, configDict):
+        '''Accepts a dictionary holding the parameter names and values.'''
+        try:
+            self._model.initialize(configDict)
+        except:
+            print("[CurveFitting::setParameters] Exception occured. Exiting.")
+            exit()
 
     def fit(self):
         '''If data and model defined, perform the fit. Returns result.'''
