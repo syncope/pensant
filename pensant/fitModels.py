@@ -53,6 +53,14 @@ class fitParameter():
     def max(self):
         return self._max
 
+    def dump(self):
+        print("[fitParameter::dump]: name:" + str(self._name) 
+                                + " value:" + str(self._value)
+                                + " variable?" + str(self._variable)
+                                + " min:" + str(self._min)
+                                + " max:" + str(self._max))
+
+
 class iModelDescription():
     '''A fit model is qualified by its parameters, this is the prototype.'''
 
@@ -84,6 +92,12 @@ class iModelDescription():
 
     def getParameterNames(self):
         return self._paramnames
+
+    def dump(self):
+        print("[ModelDescription::dump] name:" + str(self._name) 
+                                    + " prefix:" + str(self._prefix)
+                                    + " and following the parameters::::\n")
+
 
 class constant(iModelDescription):
 

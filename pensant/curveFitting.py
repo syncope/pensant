@@ -53,3 +53,6 @@ class CurveFitting():
     def fit(self):
         '''If data and model defined, perform the fit. Returns result.'''
         pass
+
+    def dump(self):
+        self._model.dump()
