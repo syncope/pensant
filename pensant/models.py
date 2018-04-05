@@ -25,6 +25,30 @@ from lmfit.models import ConstantModel, LinearModel, QuadraticModel
 from lmfit.models import PolynomialModel, ExponentialModel
 
 
+class gaussian(GaussianModel):
+    def __init__(self, **kwargs):
+        super(gaussian, self).__init__(**kwargs)
+
+class lorentzian(LorentzianModel):
+    def __init__(self, **kwargs):
+        super(lorentzian, self).__init__(**kwargs)
+
+class psv(PseudoVoigtModel):
+    def __init__(self, **kwargs):
+        super(psv, self).__init__(**kwargs)
+
+class linear(LinearModel):
+    def __init__(self, **kwargs):
+        super(linear, self).__init__(**kwargs)
+
+class quadratic(QuadraticModel):
+    def __init__(self, **kwargs):
+        super(quadratic, self).__init__(**kwargs)
+
+class constant(ConstantModel):
+    def __init__(self, **kwargs):
+        super(constant, self).__init__(**kwargs)    
+
 FitModels = { "constantModel" : constant,
               "linearModel" : linear,
               "quadraticModel" : quadratic,
@@ -32,28 +56,3 @@ FitModels = { "constantModel" : constant,
               "lorentzianModel" : lorentzian,
               "psvModel" : psv,
             }
-
-
-class gaussian(GaussianModel):
-    def __init__(self):
-        super(gaussian, self).__init__()
-
-class lorentzian(LorentzianModel):
-    def __init__(self):
-        super(lorentzian, self).__init__()
-
-class psv(PseudoVoigtModel):
-    def __init__(self):
-        super(psv, self).__init__()
-
-class linear(LinearModel):
-    def __init__(self):
-        super(linear, self).__init__()
-
-class quadratic(QuadraticModel):
-    def __init__(self):
-        super(quadratic, self).__init__()
-
-class constant(ConstantModel):
-    def __init__(self):
-        super(constant, self).__init__()    
