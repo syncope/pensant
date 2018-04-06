@@ -19,7 +19,7 @@
 # a simple guessing mechanism to extract parameters from 1D data
 
 import numpy as np
-from scipy.interpolate import CubicSpline
+from scipy.interpolate import UnivariateSpline
 
 
 class peakGuesser():
@@ -28,17 +28,19 @@ class peakGuesser():
 
     def guess(self, xdata, ydata):
         peaky = np.amax(ydata)
-        peakx = xdata[np.where(ydata==peaky)]
+        peakx = xdata[(np.where(ydata==peaky))]
+        print("x/y values are : \n" + str(xdata) + "\n" + str(ydata))
         halfpeaky = peaky/2.
-        f = CubicSpline(xdata, ydata)
-        derivative = f.derivative()
-        derivative.roots()
+        f = UnivariateSpline(xdata, ydata-peaky/2., k=3)
+        w1,w2 = f.roots()
+        print("mu is : " + str(peakx) + " at an amplitude of " + str(peaky))
+        print("fwhm is " + str(w2-w1) + " so sigma is about: " + str((w2-w1)/2.354))
         return f
 
 if __name__ == "__main__":
     pg = peakGuesser()
     x = np.arange(0, 10)
-    def gaussian(x, mu=3, sig=1.):
+    def gaussian(x, mu=7, sig=1.):
         return np.exp(-np.power(x - mu, 2.) / (2 * np.power(sig, 2.)))
     y = gaussian(x)
     k = pg.guess(x,y)
