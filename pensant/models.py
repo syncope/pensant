@@ -24,11 +24,26 @@ from lmfit.models import PseudoVoigtModel, LorentzianModel, GaussianModel
 from lmfit.models import ConstantModel, LinearModel, QuadraticModel
 from lmfit.models import PolynomialModel, ExponentialModel
 
+from PyQt4 import QtCore, QtGui, uic
+
+class ParameterSettingDialog(QtGui.QDialog):
+
+    def __init__(self, uifile, parent=None):
+        super(ParameterSettingDialog, self).__init__(parent)
+        uic.loadUi(uifile, self)
 
 class gaussian(GaussianModel):
     def __init__(self, **kwargs):
         super(gaussian, self).__init__(**kwargs)
+        self._widget = None
 
+    def getWidget(self):
+        import os
+        dir_path = os.path.dirname(os.path.realpath(__file__)) + "/"
+        formfile = os.path.join(dir_path, "ui/gaussModelFitParameters.ui")
+        self._widget = ParameterSettingDialog(uifile=formfile)
+        return self._widget
+        
 class lorentzian(LorentzianModel):
     def __init__(self, **kwargs):
         super(lorentzian, self).__init__(**kwargs)
