@@ -35,6 +35,10 @@ class peakGuesser():
         fwhm = w2 - w1
         return peakx, fwhm, peaky
 
+    def guessMeanSigmaAmplitude(self, xdata, ydata):
+        mean, fwhm, amp = self.guessMeanFwhmAmplitude(xdata, ydata)
+        return mean, fwhm/2.354, amp
+
 #~ if __name__ == "__main__":
     #~ pg = peakGuesser()
     #~ def gaussian(x, mu=5, sig=1.2, a=1):

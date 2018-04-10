@@ -43,10 +43,18 @@ class gaussian(GaussianModel):
         formfile = os.path.join(dir_path, "ui/gaussModelFitParameters.ui")
         self._widget = ParameterSettingDialog(uifile=formfile)
         return self._widget
-        
+
 class lorentzian(LorentzianModel):
     def __init__(self, **kwargs):
         super(lorentzian, self).__init__(**kwargs)
+
+    def getWidget(self):
+        import os
+        dir_path = os.path.dirname(os.path.realpath(__file__)) + "/"
+        formfile = os.path.join(dir_path, "ui/lorentzianModelFitParameters.ui")
+        self._widget = ParameterSettingDialog(uifile=formfile)
+        return self._widget
+
 
 class psv(PseudoVoigtModel):
     def __init__(self, **kwargs):
