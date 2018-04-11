@@ -26,11 +26,18 @@ from lmfit.models import PolynomialModel, ExponentialModel
 
 from PyQt4 import QtCore, QtGui, uic
 
+
 class ParameterSettingDialog(QtGui.QDialog):
 
     def __init__(self, uifile, parent=None):
         super(ParameterSettingDialog, self).__init__(parent)
         uic.loadUi(uifile, self)
+
+def modelWidgeteer(uiFilename):
+    import os
+    dir_path = os.path.dirname(os.path.realpath(__file__)) + "/"
+    formfile = os.path.join(dir_path, uiFilename)
+    return ParameterSettingDialog(uifile=formfile)
 
 class gaussian(GaussianModel):
     def __init__(self, **kwargs):
@@ -38,21 +45,21 @@ class gaussian(GaussianModel):
         self._widget = None
 
     def getWidget(self):
-        import os
-        dir_path = os.path.dirname(os.path.realpath(__file__)) + "/"
-        formfile = os.path.join(dir_path, "ui/gaussModelFitParameters.ui")
-        self._widget = ParameterSettingDialog(uifile=formfile)
+        self._widget = modelWidgeteer("ui/gaussModelFitParameters.ui")
         return self._widget
+
+    def guess(self, data, **kw):
+        print("using the underlying guess function")
+        retval = super(gaussian, self).guess(data, **kw)
+        print(" it returns: " + str(retval))
+        
 
 class lorentzian(LorentzianModel):
     def __init__(self, **kwargs):
         super(lorentzian, self).__init__(**kwargs)
 
     def getWidget(self):
-        import os
-        dir_path = os.path.dirname(os.path.realpath(__file__)) + "/"
-        formfile = os.path.join(dir_path, "ui/lorentzianModelFitParameters.ui")
-        self._widget = ParameterSettingDialog(uifile=formfile)
+        self._widget = modelWidgeteer("ui/lorentzianModelFitParameters.ui")
         return self._widget
 
 
@@ -64,18 +71,30 @@ class linear(LinearModel):
     def __init__(self, **kwargs):
         super(linear, self).__init__(**kwargs)
 
+    def getWidget(self):
+        self._widget = modelWidgeteer("ui/linearModelFitParameters.ui")
+        return self._widget
+
 class quadratic(QuadraticModel):
     def __init__(self, **kwargs):
         super(quadratic, self).__init__(**kwargs)
 
+    def getWidget(self):
+        self._widget = modelWidgeteer("ui/quadraticModelFitParameters.ui")
+        return self._widget
+
 class constant(ConstantModel):
     def __init__(self, **kwargs):
         super(constant, self).__init__(**kwargs)    
+
+    def getWidget(self):
+        self._widget = modelWidgeteer("ui/constantModelFitParameters.ui")
+        return self._widget
 
 FitModels = { "constantModel" : constant,
               "linearModel" : linear,
               "quadraticModel" : quadratic,
               "gaussianModel" : gaussian,
               "lorentzianModel" : lorentzian,
-              "psvModel" : psv,
+              #~ "psvModel" : psv,
             }
