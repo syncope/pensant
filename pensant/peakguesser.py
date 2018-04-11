@@ -37,7 +37,7 @@ class peakGuesser():
 
     def guessMeanSigmaAmplitude(self, xdata, ydata):
         mean, fwhm, amp = self.guessMeanFwhmAmplitude(xdata, ydata)
-        return mean, fwhm/2.354, amp
+        return mean, fwhm/2.3548, amp
 
 #~ if __name__ == "__main__":
     #~ pg = peakGuesser()
