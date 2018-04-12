@@ -50,7 +50,11 @@
      <item row="2" column="1">
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <item>
-        <widget class="QDoubleSpinBox" name="amplitudeValue"/>
+        <widget class="QDoubleSpinBox" name="amplitudeValue">
+         <property name="decimals">
+          <number>1</number>
+         </property>
+        </widget>
        </item>
        <item>
         <spacer name="horizontalSpacer_4">
@@ -93,7 +97,11 @@
         </widget>
        </item>
        <item>
-        <widget class="QDoubleSpinBox" name="amplitudeLBValue"/>
+        <widget class="QDoubleSpinBox" name="amplitudeLBValue">
+         <property name="decimals">
+          <number>1</number>
+         </property>
+        </widget>
        </item>
        <item>
         <spacer name="horizontalSpacer_6">
@@ -116,7 +124,11 @@
         </widget>
        </item>
        <item>
-        <widget class="QDoubleSpinBox" name="amplitudeUBValue"/>
+        <widget class="QDoubleSpinBox" name="amplitudeUBValue">
+         <property name="decimals">
+          <number>1</number>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
@@ -160,7 +172,11 @@
      <item row="1" column="1">
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
-        <widget class="QDoubleSpinBox" name="meanValue"/>
+        <widget class="QDoubleSpinBox" name="meanValue">
+         <property name="decimals">
+          <number>1</number>
+         </property>
+        </widget>
        </item>
        <item>
         <spacer name="horizontalSpacer">
@@ -203,7 +219,11 @@
         </widget>
        </item>
        <item>
-        <widget class="QDoubleSpinBox" name="meanLBValue"/>
+        <widget class="QDoubleSpinBox" name="meanLBValue">
+         <property name="decimals">
+          <number>1</number>
+         </property>
+        </widget>
        </item>
        <item>
         <spacer name="horizontalSpacer_3">
@@ -226,7 +246,11 @@
         </widget>
        </item>
        <item>
-        <widget class="QDoubleSpinBox" name="meanUBValue"/>
+        <widget class="QDoubleSpinBox" name="meanUBValue">
+         <property name="decimals">
+          <number>1</number>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
@@ -240,7 +264,11 @@
      <item row="3" column="1">
       <layout class="QHBoxLayout" name="horizontalLayout_3">
        <item>
-        <widget class="QDoubleSpinBox" name="sigmaValue"/>
+        <widget class="QDoubleSpinBox" name="sigmaValue">
+         <property name="decimals">
+          <number>1</number>
+         </property>
+        </widget>
        </item>
        <item>
         <spacer name="horizontalSpacer_7">
@@ -283,7 +311,11 @@
         </widget>
        </item>
        <item>
-        <widget class="QDoubleSpinBox" name="sigmaLBValue"/>
+        <widget class="QDoubleSpinBox" name="sigmaLBValue">
+         <property name="decimals">
+          <number>1</number>
+         </property>
+        </widget>
        </item>
        <item>
         <spacer name="horizontalSpacer_9">
@@ -306,7 +338,11 @@
         </widget>
        </item>
        <item>
-        <widget class="QDoubleSpinBox" name="sigmaUBValue"/>
+        <widget class="QDoubleSpinBox" name="sigmaUBValue">
+         <property name="decimals">
+          <number>1</number>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>

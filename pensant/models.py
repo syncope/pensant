@@ -25,7 +25,7 @@ from lmfit.models import ConstantModel, LinearModel, QuadraticModel
 from lmfit.models import PolynomialModel, ExponentialModel
 
 from PyQt4 import QtCore, QtGui, uic
-
+import numpy as np
 
 class ParameterSettingDialog(QtGui.QDialog):
 
@@ -33,26 +33,52 @@ class ParameterSettingDialog(QtGui.QDialog):
         super(ParameterSettingDialog, self).__init__(parent)
         uic.loadUi(uifile, self)
 
-def modelWidgeteer(uiFilename):
+    def passData(self, xdata, ydata):
+        self._xdata = xdata
+        self._ydata = ydata
+        self.update()
+    
+    def update(self):
+        pass
+
+class GaussianParameterSettingDialog(ParameterSettingDialog):
+    
+    def __init__(self, xdata, ydata, **kw):
+        super(GaussianParameterSettingDialog, self).__init__(**kw)
+        self.passData(xdata, ydata)
+
+    def update(self):
+        self._meanDisplay = ( float(np.mean(self._xdata)), float(np.amin(self._xdata)), float(np.amax(self._xdata)))
+        self._amplitudeDisplay =  ( float(np.mean(self._ydata)), float(np.amin(self._ydata)), float(np.amax(self._ydata))) 
+        self._sigmaDisplay = (float(self._meanDisplay[2] - self._meanDisplay[1])/3.5)
+        self.meanValue.setValue(self._meanDisplay[0])
+        self.meanLBValue.setValue(self._meanDisplay[1])
+        self.meanUBValue.setValue(self._meanDisplay[2])
+
+        self.amplitudeValue.setValue(self._amplitudeDisplay[0])
+        self.amplitudeLBValue.setValue(self._amplitudeDisplay[1])
+        self.amplitudeUBValue.setValue(self._amplitudeDisplay[2])
+
+        self.sigmaValue.setValue(self._sigmaDisplay)
+
+def modelWidgeteer(model, uiFilename, xdata, ydata):
     import os
     dir_path = os.path.dirname(os.path.realpath(__file__)) + "/"
     formfile = os.path.join(dir_path, uiFilename)
-    return ParameterSettingDialog(uifile=formfile)
+    if model == "gaussian":
+        return GaussianParameterSettingDialog(xdata, ydata, uifile=formfile)
 
 class gaussian(GaussianModel):
     def __init__(self, **kwargs):
         super(gaussian, self).__init__(**kwargs)
         self._widget = None
 
-    def getWidget(self):
-        self._widget = modelWidgeteer("ui/gaussModelFitParameters.ui")
+    def getWidget(self, xdata=None, ydata=None):
+        self._widget = modelWidgeteer("gaussian", "ui/gaussModelFitParameters.ui", xdata, ydata)
         return self._widget
 
     def guess(self, data, **kw):
-        print("using the underlying guess function")
-        retval = super(gaussian, self).guess(data, **kw)
-        print(" it returns: " + str(retval))
-        
+        retval = super(gaussian, self).guess(data, **kw)        
 
 class lorentzian(LorentzianModel):
     def __init__(self, **kwargs):

@@ -180,7 +180,7 @@
        <item>
         <widget class="QPushButton" name="configDonePushBtn">
          <property name="text">
-          <string>OK</string>
+          <string>Done</string>
          </property>
         </widget>
        </item>
