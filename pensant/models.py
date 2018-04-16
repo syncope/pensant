@@ -52,12 +52,15 @@ class GaussianParameterSettingDialog(ParameterSettingDialog):
         self.amplitudeSlider.valueChanged.connect(self._ampScaler)
         self.sigmaSlider.valueChanged.connect(self._sigmaScaler)
         self._model = model
+        self._parameters = None
+        self.guessStartValuesBtn.clicked.connect(print)
+        self.configDonePushBtn.clicked.connect(self.close)
 
     def update(self):
         # first basic calculations 
         self._meanDisplay = float(np.mean(self._xdata))
         self._meanBounds = (float(np.amin(self._xdata)), float(np.amax(self._xdata)))
-        self._sigmaDisplay = float(np.amax(self._xdata) - np.amin(self._xdata))/5.
+        self._sigmaDisplay = float(np.amax(self._xdata) - np.amin(self._xdata))/4.
         self._amplitudeDisplay = float(np.amax(self._ydata))/5.
         # now set initial values
         self.meanValue.setValue(self._meanDisplay)
@@ -72,13 +75,13 @@ class GaussianParameterSettingDialog(ParameterSettingDialog):
         self.amplitudeLBValue.setValue(float(np.amin(self._ydata)))
         self.amplitudeUBValue.setValue(float(np.amax(self._ydata)))
         # sigma
-        self.sigmaLBValue.setValue(self._sigmaDisplay/5.)
-        self.sigmaUBValue.setValue(self._sigmaDisplay*5)
+        self.sigmaLBValue.setValue(self._sigmaDisplay/4.)
+        self.sigmaUBValue.setValue(self._sigmaDisplay*4)
         self.updateFit.emit()
 
     def _meanScaler(self, val):
         valuewidth = self._meanBounds[1]-self._meanBounds[0]
-        currentVal = (self.meanSlider.minimum() + val * self.meanSlider.singleStep())/(self.meanSlider.maximum() - self.meanSlider.minimum())
+        currentVal = (self.meanSlider.minimum() + float(val * self.meanSlider.singleStep()))/(self.meanSlider.maximum() - self.meanSlider.minimum())
         self.meanValue.setValue(self._meanBounds[0] + currentVal*valuewidth)
         self.updateFit.emit()
 
@@ -90,13 +93,19 @@ class GaussianParameterSettingDialog(ParameterSettingDialog):
 
     def _sigmaScaler(self, val):
         valuewidth = self.sigmaUBValue.value() - self.sigmaLBValue.value()
-        currentVal = (self.sigmaSlider.minimum() + val * self.sigmaSlider.singleStep())/(self.sigmaSlider.maximum() - self.sigmaSlider.minimum())
+        currentVal = (self.sigmaSlider.minimum() + float(val * self.sigmaSlider.singleStep()))/(self.sigmaSlider.maximum() - self.sigmaSlider.minimum())
         self.sigmaValue.setValue(self.sigmaLBValue.value() + currentVal*valuewidth)
         self.updateFit.emit()
 
     def getCurrentFitData(self):
-        params = self._model.make_params(center=self.meanValue.value(), amplitude=self.amplitudeValue.value(), sigma=self.sigmaValue.value())
-        return self._model.eval(params, x=self._xdata) 
+        self._parameters = self._model.make_params(center=self.meanValue.value(), amplitude=self.amplitudeValue.value(), sigma=self.sigmaValue.value())
+        return self._model.eval(self._parameters, x=self._xdata)
+
+    def automaticGuess(self):
+        print("i'm guessing by the book")
+
+    def getCurrentParameterDict(self):
+        return self._parameters.valuesdict
 
 def modelWidgeteer(model, fitModel, uiFilename, xdata, ydata):
     import os
