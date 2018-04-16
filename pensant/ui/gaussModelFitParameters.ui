@@ -43,7 +43,7 @@
        <item>
         <widget class="QDoubleSpinBox" name="meanValue">
          <property name="decimals">
-          <number>1</number>
+          <number>2</number>
          </property>
          <property name="minimum">
           <double>-1000000000.000000000000000</double>
@@ -165,7 +165,7 @@
        <item>
         <widget class="QDoubleSpinBox" name="amplitudeValue">
          <property name="decimals">
-          <number>1</number>
+          <number>2</number>
          </property>
          <property name="minimum">
           <double>-1000000000.000000000000000</double>
@@ -287,7 +287,7 @@
        <item>
         <widget class="QDoubleSpinBox" name="sigmaValue">
          <property name="decimals">
-          <number>1</number>
+          <number>2</number>
          </property>
          <property name="minimum">
           <double>-1000000000.000000000000000</double>
