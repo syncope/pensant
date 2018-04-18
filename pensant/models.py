@@ -27,12 +27,14 @@ from lmfit.models import PolynomialModel, ExponentialModel
 from PyQt4 import QtCore, QtGui, uic
 import numpy as np
 
+
 class ParameterSettingDialog(QtGui.QDialog):
     updateFit = QtCore.pyqtSignal()
 
-    def __init__(self, uifile, parent=None):
+    def __init__(self, uifile, index=None, parent=None):
         super(ParameterSettingDialog, self).__init__(parent)
         uic.loadUi(uifile, self)
+        self._index = index
 
     def passData(self, xdata, ydata):
         self._xdata = xdata
@@ -42,16 +44,21 @@ class ParameterSettingDialog(QtGui.QDialog):
     def update(self):
         pass
 
-class GaussianParameterSettingDialog(ParameterSettingDialog):
-    
+    def getIndex(self):
+        return self._index
 
-    def __init__(self, xdata, ydata, model=None, **kw):
+
+class GaussianParameterSettingDialog(ParameterSettingDialog):
+
+    def __init__(self, modelname, xdata, ydata, model=None, **kw):
         super(GaussianParameterSettingDialog, self).__init__(**kw)
         self.passData(xdata, ydata)
         self.meanSlider.valueChanged.connect(self._meanScaler)
         self.amplitudeSlider.valueChanged.connect(self._ampScaler)
         self.sigmaSlider.valueChanged.connect(self._sigmaScaler)
+        self._modelName = modelname
         self._model = model
+        self._model.prefix = "m" + str(self._index) + "_"
         self._parameters = None
         self.guessStartValuesBtn.clicked.connect(print)
         self.configDonePushBtn.clicked.connect(self.close)
@@ -105,28 +112,43 @@ class GaussianParameterSettingDialog(ParameterSettingDialog):
         print("i'm guessing by the book")
 
     def getCurrentParameterDict(self):
-        return self._parameters.valuesdict
+        pdict = { self._model.prefix :
+                    { 'modeltype': 'gaussianModel',
+                     'center': {'value' : self.meanValue.value(), 'vary': ( not self.meanFixedCB.isChecked()) },
+                     'sigma' : {'value' : self.sigmaValue.value(), 'vary': (not self.sigmaFixedCB.isChecked()) },
+                     'amplitude' : {'value' : self.amplitudeValue.value(), 'vary': not self.amplitudeFixedCB.isChecked() } 
+                    }
+                }
+        return pdict
 
-def modelWidgeteer(model, fitModel, uiFilename, xdata, ydata):
+    def getName(self):
+        return self._modelName
+
+    def getModel(self):
+        return self._model
+
+def modelWidgeteer(model, fitModel, uiFilename, xdata, ydata, index):
     import os
     dir_path = os.path.dirname(os.path.realpath(__file__)) + "/"
     formfile = os.path.join(dir_path, uiFilename)
-    if model == "gaussian":
-        return GaussianParameterSettingDialog(xdata, ydata, fitModel, uifile=formfile)
+    if model == "gaussianModel":
+        return GaussianParameterSettingDialog(model, xdata, ydata, fitModel, index=index, uifile=formfile)
     else:
         return ParameterSettingDialog(uifile=formfile)
+
 
 class gaussian(GaussianModel):
     def __init__(self, **kwargs):
         super(gaussian, self).__init__(**kwargs)
         self._widget = None
 
-    def getWidget(self, xdata=None, ydata=None):
-        self._widget = modelWidgeteer("gaussian", self, "ui/gaussModelFitParameters.ui", xdata, ydata)
+    def getWidget(self, xdata=None, ydata=None, index=None):
+        self._widget = modelWidgeteer("gaussianModel", self, "ui/gaussModelFitParameters.ui", xdata, ydata, index)
         return self._widget
 
     def guess(self, data, **kw):
         retval = super(gaussian, self).guess(data, **kw)        
+
 
 class lorentzian(LorentzianModel):
     def __init__(self, **kwargs):
@@ -141,6 +163,7 @@ class psv(PseudoVoigtModel):
     def __init__(self, **kwargs):
         super(psv, self).__init__(**kwargs)
 
+
 class linear(LinearModel):
     def __init__(self, **kwargs):
         super(linear, self).__init__(**kwargs)
@@ -149,6 +172,7 @@ class linear(LinearModel):
         self._widget = modelWidgeteer("ui/linearModelFitParameters.ui")
         return self._widget
 
+
 class quadratic(QuadraticModel):
     def __init__(self, **kwargs):
         super(quadratic, self).__init__(**kwargs)
@@ -156,6 +180,7 @@ class quadratic(QuadraticModel):
     def getWidget(self):
         self._widget = modelWidgeteer("ui/quadraticModelFitParameters.ui")
         return self._widget
+
 
 class constant(ConstantModel):
     def __init__(self, **kwargs):
@@ -172,3 +197,4 @@ FitModels = { "constantModel" : constant,
               "lorentzianModel" : lorentzian,
               #~ "psvModel" : psv,
             }
+
