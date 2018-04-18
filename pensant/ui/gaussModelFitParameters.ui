@@ -311,7 +311,7 @@
         </spacer>
        </item>
        <item>
-        <widget class="QCheckBox" name="sigmaFIxedCB">
+        <widget class="QCheckBox" name="sigmaFixedCB">
          <property name="text">
           <string>fixed</string>
          </property>
