@@ -147,7 +147,8 @@ class gaussian(GaussianModel):
         return self._widget
 
     def guess(self, data, **kw):
-        retval = super(gaussian, self).guess(data, **kw)        
+        pass # does not work accurately
+        #~ return super(gaussian, self).guess(data, **kw)        
 
 
 class lorentzian(LorentzianModel):
@@ -158,10 +159,16 @@ class lorentzian(LorentzianModel):
         self._widget = modelWidgeteer("ui/lorentzianModelFitParameters.ui")
         return self._widget
 
+    def guess(self, data, **kw):
+        return super(lorentzian, self).guess(data, **kw)        
+
 
 class psv(PseudoVoigtModel):
     def __init__(self, **kwargs):
         super(psv, self).__init__(**kwargs)
+
+    def guess(self, data, **kw):
+        return super(psv, self).guess(data, **kw)        
 
 
 class linear(LinearModel):
@@ -172,6 +179,9 @@ class linear(LinearModel):
         self._widget = modelWidgeteer("ui/linearModelFitParameters.ui")
         return self._widget
 
+    def guess(self, data, **kw):
+        return super(linear, self).guess(data, **kw)        
+
 
 class quadratic(QuadraticModel):
     def __init__(self, **kwargs):
@@ -181,6 +191,9 @@ class quadratic(QuadraticModel):
         self._widget = modelWidgeteer("ui/quadraticModelFitParameters.ui")
         return self._widget
 
+    def guess(self, data, **kw):
+        return super(quadratic, self).guess(data, **kw)        
+
 
 class constant(ConstantModel):
     def __init__(self, **kwargs):
@@ -189,6 +202,11 @@ class constant(ConstantModel):
     def getWidget(self):
         self._widget = modelWidgeteer("ui/constantModelFitParameters.ui")
         return self._widget
+
+    def guess(self, data, **kw):
+        return super(constant, self).guess(data, **kw)        
+
+
 
 FitModels = { "constantModel" : constant,
               "linearModel" : linear,
