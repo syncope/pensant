@@ -96,7 +96,7 @@
        <item>
         <widget class="QDoubleSpinBox" name="meanLBValue">
          <property name="decimals">
-          <number>1</number>
+          <number>2</number>
          </property>
          <property name="minimum">
           <double>-1000000000.000000000000000</double>
@@ -129,7 +129,7 @@
        <item>
         <widget class="QDoubleSpinBox" name="meanUBValue">
          <property name="decimals">
-          <number>1</number>
+          <number>2</number>
          </property>
          <property name="minimum">
           <double>-1000000000.000000000000000</double>
@@ -218,7 +218,7 @@
        <item>
         <widget class="QDoubleSpinBox" name="amplitudeLBValue">
          <property name="decimals">
-          <number>1</number>
+          <number>2</number>
          </property>
          <property name="minimum">
           <double>-1000000000.000000000000000</double>
@@ -251,7 +251,7 @@
        <item>
         <widget class="QDoubleSpinBox" name="amplitudeUBValue">
          <property name="decimals">
-          <number>1</number>
+          <number>2</number>
          </property>
          <property name="minimum">
           <double>-1000000000.000000000000000</double>
@@ -267,6 +267,9 @@
       <layout class="QHBoxLayout" name="horizontalLayout_3">
        <item>
         <widget class="QSlider" name="sigmaSlider">
+         <property name="minimum">
+          <number>1</number>
+         </property>
          <property name="maximum">
           <number>50</number>
          </property>
@@ -340,7 +343,7 @@
        <item>
         <widget class="QDoubleSpinBox" name="sigmaLBValue">
          <property name="decimals">
-          <number>1</number>
+          <number>2</number>
          </property>
          <property name="minimum">
           <double>-1000000000.000000000000000</double>
@@ -373,7 +376,7 @@
        <item>
         <widget class="QDoubleSpinBox" name="sigmaUBValue">
          <property name="decimals">
-          <number>1</number>
+          <number>2</number>
          </property>
          <property name="minimum">
           <double>-1000000000.000000000000000</double>
