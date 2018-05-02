@@ -26,10 +26,11 @@ from lmfit.models import PolynomialModel, ExponentialModel
 
 from PyQt4 import QtCore, QtGui, uic
 import numpy as np
-
+import math
 
 class ParameterSettingDialog(QtGui.QDialog):
     updateFit = QtCore.pyqtSignal()
+    guessingDone = QtCore.pyqtSignal()
 
     def __init__(self, uifile, index=None, parent=None):
         super(ParameterSettingDialog, self).__init__(parent)
@@ -61,14 +62,42 @@ class GaussianParameterSettingDialog(ParameterSettingDialog):
         self._model.prefix = "m" + str(self._index) + "_"
         self._parameters = None
         self.guessStartValuesBtn.clicked.connect(print)
-        self.configDonePushBtn.clicked.connect(self.close)
+        self.configDonePushBtn.clicked.connect(self._guessingDone)
+
+    def _guessingDone(self, **kw):
+        self.guessingDone.emit()
+        self.close(**kw)
 
     def update(self):
         # first basic calculations 
         self._meanDisplay = float(np.mean(self._xdata))
         self._meanBounds = (float(np.amin(self._xdata)), float(np.amax(self._xdata)))
-        self._sigmaDisplay = float(np.amax(self._xdata) - np.amin(self._xdata))/4.
-        self._amplitudeDisplay = float(np.amax(self._ydata))/5.
+        self._sigmaDisplay = float(np.amax(self._xdata) - np.amin(self._xdata))/10.
+        self._sigmaBounds = (float(self._sigmaDisplay/10.), float(self._sigmaDisplay*2.))
+        self._amplitudeDisplay = float(np.amax(self._ydata))/8.
+        self._amplitudeBounds = (float(np.amin(self._ydata)), float(np.amax(self._ydata)))
+
+        # first fix the accuracy of the display
+        # number of steps;
+        meanStep =(self._meanBounds[1] - self._meanBounds[0])/(self.meanSlider.maximum()-self.meanSlider.minimum())
+        meanAcc = math.floor(math.fabs(math.log10(meanStep)))+2
+        self.meanValue.setDecimals(meanAcc)
+        self.meanLBValue.setDecimals(meanAcc)
+        self.meanUBValue.setDecimals(meanAcc)
+
+        amplitudeStep =(self._amplitudeBounds[1] - self._amplitudeBounds[0])/(self.amplitudeSlider.maximum()-self.amplitudeSlider.minimum())
+        amplitudeAcc = math.floor(math.fabs(math.log10(amplitudeStep)))+2
+        self.amplitudeValue.setDecimals(amplitudeAcc)
+        self.amplitudeLBValue.setDecimals(amplitudeAcc)
+        self.amplitudeUBValue.setDecimals(amplitudeAcc)
+
+        sigmaStep =(self._sigmaBounds[1] - self._sigmaBounds[0])/(self.sigmaSlider.maximum()-self.sigmaSlider.minimum())
+        sigmaAcc = math.floor(math.fabs(math.log10(sigmaStep)))+2
+        self.sigmaValue.setDecimals(sigmaAcc)
+        self.sigmaLBValue.setDecimals(sigmaAcc)
+        self.sigmaUBValue.setDecimals(sigmaAcc)
+        
+
         # now set initial values
         self.meanValue.setValue(self._meanDisplay)
         self.amplitudeValue.setValue(self._amplitudeDisplay)
@@ -76,14 +105,15 @@ class GaussianParameterSettingDialog(ParameterSettingDialog):
 
         # and now the boundaries -- as valid for the slider
         # mean:
-        self.meanLBValue.setValue(float(np.amin(self._xdata)))
-        self.meanUBValue.setValue(float(np.amax(self._xdata)))
+        self.meanLBValue.setValue(self._meanBounds[0])
+        self.meanUBValue.setValue(self._meanBounds[1])
         # amplitude
-        self.amplitudeLBValue.setValue(float(np.amin(self._ydata)))
-        self.amplitudeUBValue.setValue(float(np.amax(self._ydata)))
+        self.amplitudeLBValue.setValue(self._amplitudeBounds[0])
+        self.amplitudeUBValue.setValue(self._amplitudeBounds[1])
         # sigma
-        self.sigmaLBValue.setValue(self._sigmaDisplay/4.)
-        self.sigmaUBValue.setValue(self._sigmaDisplay*4)
+        self.sigmaLBValue.setValue(self._sigmaBounds[0])
+        self.sigmaUBValue.setValue(self._sigmaBounds[1])
+
         self.updateFit.emit()
 
     def _meanScaler(self, val):
