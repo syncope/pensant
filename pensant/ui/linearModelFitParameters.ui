@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>578</width>
+    <width>945</width>
     <height>140</height>
    </rect>
   </property>
@@ -19,7 +19,21 @@
      <item row="0" column="1">
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
-        <widget class="QDoubleSpinBox" name="meanValue"/>
+        <widget class="QSlider" name="slopeSlider">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QDoubleSpinBox" name="slopeValue">
+         <property name="minimum">
+          <double>-1000000000.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>1000000000.000000000000000</double>
+         </property>
+        </widget>
        </item>
        <item>
         <spacer name="horizontalSpacer">
@@ -35,7 +49,7 @@
         </spacer>
        </item>
        <item>
-        <widget class="QCheckBox" name="meanFixedCB">
+        <widget class="QCheckBox" name="slopeFixedCB">
          <property name="text">
           <string>fixed</string>
          </property>
@@ -55,14 +69,21 @@
         </spacer>
        </item>
        <item>
-        <widget class="QCheckBox" name="useLBMean">
+        <widget class="QCheckBox" name="useLBSlope">
          <property name="text">
           <string>lower bound</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QDoubleSpinBox" name="meanLBValue"/>
+        <widget class="QDoubleSpinBox" name="slopeLBValue">
+         <property name="minimum">
+          <double>-1000000000.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>1000000000.000000000000000</double>
+         </property>
+        </widget>
        </item>
        <item>
         <spacer name="horizontalSpacer_3">
@@ -78,21 +99,42 @@
         </spacer>
        </item>
        <item>
-        <widget class="QCheckBox" name="useUBMean">
+        <widget class="QCheckBox" name="useUBSlope">
          <property name="text">
           <string>upper bound</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QDoubleSpinBox" name="meanUBValue"/>
+        <widget class="QDoubleSpinBox" name="slopeUBValue">
+         <property name="minimum">
+          <double>-1000000000.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>1000000000.000000000000000</double>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
      <item row="1" column="1">
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <item>
-        <widget class="QDoubleSpinBox" name="amplitudeValue"/>
+        <widget class="QSlider" name="interceptSlider">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QDoubleSpinBox" name="interceptValue">
+         <property name="minimum">
+          <double>-1000000000.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>1000000000.000000000000000</double>
+         </property>
+        </widget>
        </item>
        <item>
         <spacer name="horizontalSpacer_4">
@@ -108,7 +150,7 @@
         </spacer>
        </item>
        <item>
-        <widget class="QCheckBox" name="amplitudeFixedCB">
+        <widget class="QCheckBox" name="interceptFixedCB">
          <property name="text">
           <string>fixed</string>
          </property>
@@ -128,14 +170,21 @@
         </spacer>
        </item>
        <item>
-        <widget class="QCheckBox" name="useLBAmplitude">
+        <widget class="QCheckBox" name="useLBIntercept">
          <property name="text">
           <string>lower bound</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QDoubleSpinBox" name="amplitudeLBValue"/>
+        <widget class="QDoubleSpinBox" name="interceptLBValue">
+         <property name="minimum">
+          <double>-1000000000.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>1000000000.000000000000000</double>
+         </property>
+        </widget>
        </item>
        <item>
         <spacer name="horizontalSpacer_6">
@@ -151,14 +200,21 @@
         </spacer>
        </item>
        <item>
-        <widget class="QCheckBox" name="useUBAmplitude">
+        <widget class="QCheckBox" name="useUBIntercept">
          <property name="text">
           <string>upper bound</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QDoubleSpinBox" name="amplitudeUBValue"/>
+        <widget class="QDoubleSpinBox" name="interceptUBValue">
+         <property name="minimum">
+          <double>-1000000000.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>1000000000.000000000000000</double>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
