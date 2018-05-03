@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>620</width>
+    <width>964</width>
     <height>168</height>
    </rect>
   </property>
@@ -22,9 +22,28 @@
      <item row="0" column="1">
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
-        <widget class="QDoubleSpinBox" name="meanValue">
+        <widget class="QSlider" name="centerSlider">
+         <property name="maximum">
+          <number>50</number>
+         </property>
+         <property name="value">
+          <number>25</number>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QDoubleSpinBox" name="centerValue">
          <property name="decimals">
-          <number>1</number>
+          <number>2</number>
+         </property>
+         <property name="minimum">
+          <double>-1000000.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>1000000.000000000000000</double>
          </property>
         </widget>
        </item>
@@ -42,7 +61,7 @@
         </spacer>
        </item>
        <item>
-        <widget class="QCheckBox" name="meanFixedCB">
+        <widget class="QCheckBox" name="centerFixedCB">
          <property name="text">
           <string>fixed</string>
          </property>
@@ -62,16 +81,22 @@
         </spacer>
        </item>
        <item>
-        <widget class="QCheckBox" name="useLBMean">
+        <widget class="QCheckBox" name="useLBCenter">
          <property name="text">
           <string>lower bound</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QDoubleSpinBox" name="meanLBValue">
+        <widget class="QDoubleSpinBox" name="centerLBValue">
          <property name="decimals">
-          <number>1</number>
+          <number>2</number>
+         </property>
+         <property name="minimum">
+          <double>-1000000.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>1000000.000000000000000</double>
          </property>
         </widget>
        </item>
@@ -89,16 +114,22 @@
         </spacer>
        </item>
        <item>
-        <widget class="QCheckBox" name="useUBMean">
+        <widget class="QCheckBox" name="useUBCenter">
          <property name="text">
           <string>upper bound</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QDoubleSpinBox" name="meanUBValue">
+        <widget class="QDoubleSpinBox" name="centerUBValue">
          <property name="decimals">
-          <number>1</number>
+          <number>2</number>
+         </property>
+         <property name="minimum">
+          <double>-1000000.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>1000000.000000000000000</double>
          </property>
         </widget>
        </item>
@@ -107,9 +138,28 @@
      <item row="1" column="1">
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <item>
+        <widget class="QSlider" name="amplitudeSlider">
+         <property name="maximum">
+          <number>50</number>
+         </property>
+         <property name="value">
+          <number>25</number>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QDoubleSpinBox" name="amplitudeValue">
          <property name="decimals">
-          <number>1</number>
+          <number>2</number>
+         </property>
+         <property name="minimum">
+          <double>-1000000.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>1000000.000000000000000</double>
          </property>
         </widget>
        </item>
@@ -156,7 +206,13 @@
        <item>
         <widget class="QDoubleSpinBox" name="amplitudeLBValue">
          <property name="decimals">
-          <number>1</number>
+          <number>2</number>
+         </property>
+         <property name="minimum">
+          <double>-1000000.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>1000000.000000000000000</double>
          </property>
         </widget>
        </item>
@@ -183,7 +239,13 @@
        <item>
         <widget class="QDoubleSpinBox" name="amplitudeUBValue">
          <property name="decimals">
-          <number>1</number>
+          <number>2</number>
+         </property>
+         <property name="minimum">
+          <double>-1000000.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>1000000.000000000000000</double>
          </property>
         </widget>
        </item>
@@ -192,9 +254,28 @@
      <item row="2" column="1">
       <layout class="QHBoxLayout" name="horizontalLayout_3">
        <item>
-        <widget class="QDoubleSpinBox" name="fwhmValue">
+        <widget class="QSlider" name="sigmaSlider">
+         <property name="maximum">
+          <number>50</number>
+         </property>
+         <property name="value">
+          <number>25</number>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QDoubleSpinBox" name="sigmaValue">
          <property name="decimals">
-          <number>1</number>
+          <number>2</number>
+         </property>
+         <property name="minimum">
+          <double>-1000000.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>1000000.000000000000000</double>
          </property>
         </widget>
        </item>
@@ -212,7 +293,7 @@
         </spacer>
        </item>
        <item>
-        <widget class="QCheckBox" name="fwhmFIxedCB">
+        <widget class="QCheckBox" name="sigmaFixedCB">
          <property name="text">
           <string>fixed</string>
          </property>
@@ -232,16 +313,22 @@
         </spacer>
        </item>
        <item>
-        <widget class="QCheckBox" name="useLBFWHM">
+        <widget class="QCheckBox" name="useLBSigma">
          <property name="text">
           <string>lower bound</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QDoubleSpinBox" name="fwhmLBValue">
+        <widget class="QDoubleSpinBox" name="sigmaLBValue">
          <property name="decimals">
-          <number>1</number>
+          <number>2</number>
+         </property>
+         <property name="minimum">
+          <double>-1000000.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>1000000.000000000000000</double>
          </property>
         </widget>
        </item>
@@ -259,16 +346,22 @@
         </spacer>
        </item>
        <item>
-        <widget class="QCheckBox" name="useUBFWHM">
+        <widget class="QCheckBox" name="useUBSigma">
          <property name="text">
           <string>upper bound</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QDoubleSpinBox" name="fwhmUBValue">
+        <widget class="QDoubleSpinBox" name="sigmaUBValue">
          <property name="decimals">
-          <number>1</number>
+          <number>2</number>
+         </property>
+         <property name="minimum">
+          <double>-1000000.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>1000000.000000000000000</double>
          </property>
         </widget>
        </item>
@@ -332,14 +425,14 @@
      <item row="2" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>FWHM Value</string>
+        <string>Sigma Value</string>
        </property>
       </widget>
      </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Mean value</string>
+        <string>Center value</string>
        </property>
       </widget>
      </item>
