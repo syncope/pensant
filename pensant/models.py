@@ -163,6 +163,8 @@ def modelWidgeteer(model, fitModel, uiFilename, xdata, ydata, index):
     formfile = os.path.join(dir_path, uiFilename)
     if model == "gaussianModel":
         return GaussianParameterSettingDialog(model, xdata, ydata, fitModel, index=index, uifile=formfile)
+    elif model == "constantModel":
+        return ConstantParameterSettingDialog(model, xdata, ydata, fitModel, index=index, uifile=formfile)
     else:
         return ParameterSettingDialog(uifile=formfile)
 
@@ -229,13 +231,80 @@ class constant(ConstantModel):
     def __init__(self, **kwargs):
         super(constant, self).__init__(**kwargs)    
 
-    def getWidget(self):
-        self._widget = modelWidgeteer("ui/constantModelFitParameters.ui")
+    def getWidget(self, xdata=None, ydata=None, index=None):
+        self._widget = modelWidgeteer("constantModel", self, "ui/constantModelFitParameters.ui", xdata, ydata, index)
         return self._widget
 
     def guess(self, data, **kw):
         return super(constant, self).guess(data, **kw)        
 
+
+class ConstantParameterSettingDialog(ParameterSettingDialog):
+
+    def __init__(self, modelname, xdata, ydata, model=None, **kw):
+        super(ConstantParameterSettingDialog, self).__init__(**kw)
+        self.passData(xdata, ydata)
+
+        self.constSlider.valueChanged.connect(self._constScaler)
+        self._modelName = modelname
+        self._model = model
+        self._model.prefix = "m" + str(self._index) + "_"
+        self._parameters = None
+        self.guessStartValuesBtn.clicked.connect(print)
+        self.configDonePushBtn.clicked.connect(self._guessingDone)
+
+    def _guessingDone(self, **kw):
+        self.guessingDone.emit()
+        self.close(**kw)
+
+    def update(self):
+        # first basic calculations 
+        self._constDisplay = float(np.mean(self._ydata))
+        self._constBounds = (float(np.amin(self._ydata)), float(np.amax(self._ydata)))
+
+        # first fix the accuracy of the display
+        # number of steps;
+        constStep =(self._constBounds[1] - self._constBounds[0])/(self.constSlider.maximum()-self.constSlider.minimum())
+        constAcc = math.floor(math.fabs(math.log10(constStep)))+2
+        self.constValue.setDecimals(constAcc)
+        self.constLBValue.setDecimals(constAcc)
+        self.constUBValue.setDecimals(constAcc)
+
+        # now set initial value
+        self.constValue.setValue(self._constDisplay)
+
+        # and now the boundaries -- as valid for the slider
+        self.constLBValue.setValue(self._constBounds[0])
+        self.constUBValue.setValue(self._constBounds[1])
+
+        self.updateFit.emit()
+
+    def _constScaler(self, val):
+        valuewidth = self._constBounds[1]-self._constBounds[0]
+        currentVal = (self.constSlider.minimum() + float(val * self.constSlider.singleStep()))/(self.constSlider.maximum() - self.constSlider.minimum())
+        self.constValue.setValue(self._constBounds[0] + currentVal*valuewidth)
+        self.updateFit.emit()
+
+    def getCurrentFitData(self):
+        self._parameters = self._model.make_params(c=self.constValue.value())
+        return self._model.eval(self._parameters, x=self._xdata)
+
+    def automaticGuess(self):
+        print("i'm guessing by the book")
+
+    def getCurrentParameterDict(self):
+        pdict = { self._model.prefix :
+                    { 'modeltype': 'constantModel',
+                     'c': {'value' : self.constValue.value(), 'vary': ( not self.constFixedCB.isChecked()) },
+                    }
+                }
+        return pdict
+
+    def getName(self):
+        return self._modelName
+
+    def getModel(self):
+        return self._model
 
 
 FitModels = { "constantModel" : constant,
