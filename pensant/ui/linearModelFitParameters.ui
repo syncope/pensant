@@ -20,6 +20,9 @@
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
         <widget class="QSlider" name="slopeSlider">
+         <property name="maximum">
+          <number>50</number>
+         </property>
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
@@ -121,6 +124,9 @@
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <item>
         <widget class="QSlider" name="interceptSlider">
+         <property name="maximum">
+          <number>50</number>
+         </property>
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
