@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1006</width>
+    <width>919</width>
     <height>172</height>
    </rect>
   </property>
@@ -20,17 +20,20 @@
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
         <widget class="QSlider" name="meanSlider">
+         <property name="minimum">
+          <number>0</number>
+         </property>
          <property name="maximum">
-          <number>50</number>
+          <number>100</number>
          </property>
          <property name="pageStep">
           <number>5</number>
          </property>
          <property name="value">
-          <number>25</number>
+          <number>50</number>
          </property>
          <property name="sliderPosition">
-          <number>25</number>
+          <number>50</number>
          </property>
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
@@ -145,17 +148,20 @@
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <item>
         <widget class="QSlider" name="amplitudeSlider">
+         <property name="minimum">
+          <number>0</number>
+         </property>
          <property name="maximum">
-          <number>50</number>
+          <number>100</number>
          </property>
          <property name="pageStep">
           <number>5</number>
          </property>
          <property name="value">
-          <number>25</number>
+          <number>50</number>
          </property>
          <property name="sliderPosition">
-          <number>25</number>
+          <number>50</number>
          </property>
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
@@ -268,19 +274,19 @@
        <item>
         <widget class="QSlider" name="sigmaSlider">
          <property name="minimum">
-          <number>1</number>
+          <number>0</number>
          </property>
          <property name="maximum">
-          <number>50</number>
+          <number>100</number>
          </property>
          <property name="pageStep">
           <number>5</number>
          </property>
          <property name="value">
-          <number>25</number>
+          <number>50</number>
          </property>
          <property name="sliderPosition">
-          <number>25</number>
+          <number>50</number>
          </property>
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
@@ -450,13 +456,6 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>Mean value</string>
-       </property>
-      </widget>
-     </item>
      <item row="4" column="1">
       <spacer name="verticalSpacer">
        <property name="orientation">
@@ -469,6 +468,13 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Mean value</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

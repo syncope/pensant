@@ -54,6 +54,9 @@ class GaussianParameterSettingDialog(ParameterSettingDialog):
     def __init__(self, modelname, xdata, ydata, model=None, **kw):
         super(GaussianParameterSettingDialog, self).__init__(**kw)
         self.passData(xdata, ydata)
+        #~ self.meanValue.editingFinished.connect(self._updateMeanSlider)
+        #~ self.amplitudeValue.editingFinished.connect(self._updateAmplitudeSlider)
+        #~ self.sigmaValue.editingFinished.connect(self._updateSigmaSlider)
         self.meanSlider.valueChanged.connect(self._meanScaler)
         self.amplitudeSlider.valueChanged.connect(self._ampScaler)
         self.sigmaSlider.valueChanged.connect(self._sigmaScaler)
@@ -68,14 +71,27 @@ class GaussianParameterSettingDialog(ParameterSettingDialog):
         self.guessingDone.emit()
         self.close(**kw)
 
+    def _updateSigmaSlider(self,value):
+        pass
+
+    def _updateAmplitudeSlider(self,value):
+        pass
+
+    def _updateMeanSlider(self,value):
+        pass
+
+
     def update(self):
         # first basic calculations 
         self._meanDisplay = float(np.mean(self._xdata))
         self._meanBounds = (float(np.amin(self._xdata)), float(np.amax(self._xdata)))
         self._sigmaDisplay = float(np.amax(self._xdata) - np.amin(self._xdata))/10.
         self._sigmaBounds = (float(self._sigmaDisplay/10.), float(self._sigmaDisplay*2.))
-        self._amplitudeDisplay = float(np.amax(self._ydata))/8.
-        self._amplitudeBounds = (float(np.amin(self._ydata)), float(np.amax(self._ydata)))
+        self._amplitudeDisplay = float(np.amax(self._ydata))/10.
+        lowerAmpBound = float(np.amin(self._ydata))
+        if lowerAmpBound < 0.:
+            lowerAmpBound = 0.
+        self._amplitudeBounds = (lowerAmpBound, float(np.amax(self._ydata))/(10*self._sigmaBounds[1]))
 
         # first fix the accuracy of the display
         # number of steps;
@@ -96,7 +112,6 @@ class GaussianParameterSettingDialog(ParameterSettingDialog):
         self.sigmaValue.setDecimals(sigmaAcc)
         self.sigmaLBValue.setDecimals(sigmaAcc)
         self.sigmaUBValue.setDecimals(sigmaAcc)
-        
 
         # now set initial values
         self.meanValue.setValue(self._meanDisplay)
