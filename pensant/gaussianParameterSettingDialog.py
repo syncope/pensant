@@ -16,7 +16,9 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor,
 # Boston, MA  02110-1301, USA.
 
-import parameterSettingDialog
+from . import parameterSettingDialog
+import numpy as np
+import math
 
 
 class GaussianParameterSettingDialog(parameterSettingDialog.ParameterSettingDialog):

@@ -17,8 +17,6 @@
 # Boston, MA  02110-1301, USA.
 
 from PyQt4 import QtCore, QtGui, uic
-import numpy as np
-import math
 
 class ParameterSettingDialog(QtGui.QDialog):
     updateFit = QtCore.pyqtSignal()

@@ -28,12 +28,12 @@ from PyQt4 import QtCore, QtGui, uic
 import numpy as np
 import math
 
-import constantParameterSettingDialog
-import gaussianParameterSettingDialog
-import linearParameterSettingDialog
-import lorentzianParameterSettingDialog
-import parameterSettingDialog
-import quadraticParameterSettingDialog.py
+from . import constantParameterSettingDialog
+from . import gaussianParameterSettingDialog
+from . import linearParameterSettingDialog
+from . import lorentzianParameterSettingDialog
+from . import parameterSettingDialog
+from . import quadraticParameterSettingDialog
 
 
 class gaussian(GaussianModel):
