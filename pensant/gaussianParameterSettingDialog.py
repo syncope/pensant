@@ -58,7 +58,7 @@ class GaussianParameterSettingDialog(parameterSettingDialog.ParameterSettingDial
         self._meanDisplay = float(np.mean(self._xdata))
         self._meanBounds = (float(np.amin(self._xdata)), float(np.amax(self._xdata)))
         self._sigmaDisplay = float(np.amax(self._xdata) - np.amin(self._xdata))/10.
-        self._sigmaBounds = (float(self._sigmaDisplay/10.), float(self._sigmaDisplay*2.))
+        self._sigmaBounds = (float(self._sigmaDisplay/25.), float(self._sigmaDisplay*2.))
         self._maximumDisplay = float(np.amax(self._ydata))/2.
         lowerMaxBound = float(np.amin(self._ydata))
         if lowerMaxBound < 0.:
