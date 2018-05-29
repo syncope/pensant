@@ -26,9 +26,9 @@ class GaussianParameterSettingDialog(parameterSettingDialog.ParameterSettingDial
     def __init__(self, modelname, xdata, ydata, model=None, **kw):
         super(GaussianParameterSettingDialog, self).__init__(**kw)
         self.passData(xdata, ydata)
-        #~ self.meanValue.editingFinished.connect(self._updateMeanSlider)
-        #~ self.amplitudeValue.editingFinished.connect(self._updateAmplitudeSlider)
-        #~ self.sigmaValue.editingFinished.connect(self._updateSigmaSlider)
+        self.meanValue.valueChanged.connect(self._updateMean)
+        self.maximumValue.editingFinished.connect(self.updateFit.emit)
+        self.sigmaValue.editingFinished.connect(self.updateFit.emit)
         self.meanSlider.valueChanged.connect(self._meanScaler)
         self.maximumSlider.valueChanged.connect(self._maxScaler)
         self.sigmaSlider.valueChanged.connect(self._sigmaScaler)
@@ -42,15 +42,17 @@ class GaussianParameterSettingDialog(parameterSettingDialog.ParameterSettingDial
     def _guessingDone(self, **kw):
         self.guessingDone.emit()
         self.close(**kw)
+#~ 
+    #~ def _updateSigma(self,value):
+        #~ pass
+#~ 
+    #~ def _updateMaximum(self,value):
+        #~ pass
 
-    #~ def _updateSigmaSlider(self,value):
-        #~ pass
-#~ 
-    #~ def _updateAmplitudeSlider(self,value):
-        #~ pass
-#~ 
-    #~ def _updateMeanSlider(self,value):
-        #~ pass
+    def _updateMean(self, value):
+        # pass the actual mean value and convert it into the display slider value
+        #~ self.meanSlider.setValue(int((value - self._meanBounds[0])/self.meanStep))
+        self.updateFit.emit()
 
 
     def update(self):
@@ -63,23 +65,26 @@ class GaussianParameterSettingDialog(parameterSettingDialog.ParameterSettingDial
         lowerMaxBound = float(np.amin(self._ydata))
         if lowerMaxBound < 0.:
             lowerMaxBound = 0.
-        self._maximumBounds = (lowerMaxBound, float(np.amax(self._ydata))*1.1)
+        self._maximumBounds = (lowerMaxBound, float(np.amax(self._ydata))*1.2)
 
         # first fix the accuracy of the display
         # number of steps;
-        meanStep =(self._meanBounds[1] - self._meanBounds[0])/(self.meanSlider.maximum()-self.meanSlider.minimum())
-        meanAcc = math.floor(math.fabs(math.log10(meanStep)))+2
+        self.meanStep =(self._meanBounds[1] - self._meanBounds[0])/(self.meanSlider.maximum()-self.meanSlider.minimum())
+        self.meanValue.setSingleStep(self.meanStep/5.)
+        meanAcc = math.floor(math.fabs(math.log10(self.meanStep)))+2
         self.meanValue.setDecimals(meanAcc)
         self.meanLBValue.setDecimals(meanAcc)
         self.meanUBValue.setDecimals(meanAcc)
 
         maximumStep =(self._maximumBounds[1] - self._maximumBounds[0])/(self.maximumSlider.maximum()-self.maximumSlider.minimum())
+        self.maximumValue.setSingleStep(maximumStep/5.)
         maximumAcc = math.floor(math.fabs(math.log10(maximumStep)))+2
         self.maximumValue.setDecimals(maximumAcc)
         self.maximumLBValue.setDecimals(maximumAcc)
         self.maximumUBValue.setDecimals(maximumAcc)
 
         sigmaStep =(self._sigmaBounds[1] - self._sigmaBounds[0])/(self.sigmaSlider.maximum()-self.sigmaSlider.minimum())
+        self.sigmaValue.setSingleStep(sigmaStep/5.)
         sigmaAcc = math.floor(math.fabs(math.log10(sigmaStep)))+2
         self.sigmaValue.setDecimals(sigmaAcc)
         self.sigmaLBValue.setDecimals(sigmaAcc)
