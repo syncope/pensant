@@ -30,7 +30,7 @@ class GaussianParameterSettingDialog(parameterSettingDialog.ParameterSettingDial
         #~ self.amplitudeValue.editingFinished.connect(self._updateAmplitudeSlider)
         #~ self.sigmaValue.editingFinished.connect(self._updateSigmaSlider)
         self.meanSlider.valueChanged.connect(self._meanScaler)
-        self.amplitudeSlider.valueChanged.connect(self._ampScaler)
+        self.maximumSlider.valueChanged.connect(self._maxScaler)
         self.sigmaSlider.valueChanged.connect(self._sigmaScaler)
         self._modelName = modelname
         self._model = model
@@ -43,14 +43,14 @@ class GaussianParameterSettingDialog(parameterSettingDialog.ParameterSettingDial
         self.guessingDone.emit()
         self.close(**kw)
 
-    def _updateSigmaSlider(self,value):
-        pass
-
-    def _updateAmplitudeSlider(self,value):
-        pass
-
-    def _updateMeanSlider(self,value):
-        pass
+    #~ def _updateSigmaSlider(self,value):
+        #~ pass
+#~ 
+    #~ def _updateAmplitudeSlider(self,value):
+        #~ pass
+#~ 
+    #~ def _updateMeanSlider(self,value):
+        #~ pass
 
 
     def update(self):
@@ -59,11 +59,11 @@ class GaussianParameterSettingDialog(parameterSettingDialog.ParameterSettingDial
         self._meanBounds = (float(np.amin(self._xdata)), float(np.amax(self._xdata)))
         self._sigmaDisplay = float(np.amax(self._xdata) - np.amin(self._xdata))/10.
         self._sigmaBounds = (float(self._sigmaDisplay/10.), float(self._sigmaDisplay*2.))
-        self._amplitudeDisplay = float(np.amax(self._ydata))/10.
-        lowerAmpBound = float(np.amin(self._ydata))
-        if lowerAmpBound < 0.:
-            lowerAmpBound = 0.
-        self._amplitudeBounds = (lowerAmpBound, float(np.amax(self._ydata))/(10*self._sigmaBounds[1]))
+        self._maximumDisplay = float(np.amax(self._ydata))/2.
+        lowerMaxBound = float(np.amin(self._ydata))
+        if lowerMaxBound < 0.:
+            lowerMaxBound = 0.
+        self._maximumBounds = (lowerMaxBound, float(np.amax(self._ydata))*1.1)
 
         # first fix the accuracy of the display
         # number of steps;
@@ -73,11 +73,11 @@ class GaussianParameterSettingDialog(parameterSettingDialog.ParameterSettingDial
         self.meanLBValue.setDecimals(meanAcc)
         self.meanUBValue.setDecimals(meanAcc)
 
-        amplitudeStep =(self._amplitudeBounds[1] - self._amplitudeBounds[0])/(self.amplitudeSlider.maximum()-self.amplitudeSlider.minimum())
-        amplitudeAcc = math.floor(math.fabs(math.log10(amplitudeStep)))+2
-        self.amplitudeValue.setDecimals(amplitudeAcc)
-        self.amplitudeLBValue.setDecimals(amplitudeAcc)
-        self.amplitudeUBValue.setDecimals(amplitudeAcc)
+        maximumStep =(self._maximumBounds[1] - self._maximumBounds[0])/(self.maximumSlider.maximum()-self.maximumSlider.minimum())
+        maximumAcc = math.floor(math.fabs(math.log10(maximumStep)))+2
+        self.maximumValue.setDecimals(maximumAcc)
+        self.maximumLBValue.setDecimals(maximumAcc)
+        self.maximumUBValue.setDecimals(maximumAcc)
 
         sigmaStep =(self._sigmaBounds[1] - self._sigmaBounds[0])/(self.sigmaSlider.maximum()-self.sigmaSlider.minimum())
         sigmaAcc = math.floor(math.fabs(math.log10(sigmaStep)))+2
@@ -87,7 +87,7 @@ class GaussianParameterSettingDialog(parameterSettingDialog.ParameterSettingDial
 
         # now set initial values
         self.meanValue.setValue(self._meanDisplay)
-        self.amplitudeValue.setValue(self._amplitudeDisplay)
+        self.maximumValue.setValue(self._maximumDisplay)
         self.sigmaValue.setValue(self._sigmaDisplay)
 
         # and now the boundaries -- as valid for the slider
@@ -95,8 +95,8 @@ class GaussianParameterSettingDialog(parameterSettingDialog.ParameterSettingDial
         self.meanLBValue.setValue(self._meanBounds[0])
         self.meanUBValue.setValue(self._meanBounds[1])
         # amplitude
-        self.amplitudeLBValue.setValue(self._amplitudeBounds[0])
-        self.amplitudeUBValue.setValue(self._amplitudeBounds[1])
+        self.maximumLBValue.setValue(self._maximumBounds[0])
+        self.maximumUBValue.setValue(self._maximumBounds[1])
         # sigma
         self.sigmaLBValue.setValue(self._sigmaBounds[0])
         self.sigmaUBValue.setValue(self._sigmaBounds[1])
@@ -109,10 +109,10 @@ class GaussianParameterSettingDialog(parameterSettingDialog.ParameterSettingDial
         self.meanValue.setValue(self._meanBounds[0] + currentVal*valuewidth)
         self.updateFit.emit()
 
-    def _ampScaler(self, val):
-        valuewidth = self.amplitudeUBValue.value() - self.amplitudeLBValue.value()
-        currentVal = (self.amplitudeSlider.minimum() + val * self.amplitudeSlider.singleStep())/(self.amplitudeSlider.maximum() - self.amplitudeSlider.minimum())
-        self.amplitudeValue.setValue(self.amplitudeLBValue.value() + currentVal*valuewidth)
+    def _maxScaler(self, val):
+        valuewidth = self.maximumUBValue.value() - self.maximumLBValue.value()
+        currentVal = (self.maximumSlider.minimum() + val * self.maximumSlider.singleStep())/(self.maximumSlider.maximum() - self.maximumSlider.minimum())
+        self.maximumValue.setValue(self.maximumLBValue.value() + currentVal*valuewidth)
         self.updateFit.emit()
 
     def _sigmaScaler(self, val):
@@ -122,7 +122,7 @@ class GaussianParameterSettingDialog(parameterSettingDialog.ParameterSettingDial
         self.updateFit.emit()
 
     def getCurrentFitData(self):
-        self._parameters = self._model.make_params(center=self.meanValue.value(), amplitude=self.amplitudeValue.value(), sigma=self.sigmaValue.value())
+        self._parameters = self._model.make_params(center=self.meanValue.value(), amplitude=self._getAmplitude(), sigma=self.sigmaValue.value())
         return self._model.eval(self._parameters, x=self._xdata)
 
     def automaticGuess(self):
@@ -133,7 +133,7 @@ class GaussianParameterSettingDialog(parameterSettingDialog.ParameterSettingDial
                     { 'modeltype': 'gaussianModel',
                      'center': {'value' : self.meanValue.value(), 'vary': ( not self.meanFixedCB.isChecked()) },
                      'sigma' : {'value' : self.sigmaValue.value(), 'vary': (not self.sigmaFixedCB.isChecked()) },
-                     'amplitude' : {'value' : self.amplitudeValue.value(), 'vary': not self.amplitudeFixedCB.isChecked() } 
+                     'amplitude' : {'value' : self._getAmplitude(), 'vary': not self.maximumFixedCB.isChecked() } 
                     }
                 }
         return pdict
@@ -143,3 +143,6 @@ class GaussianParameterSettingDialog(parameterSettingDialog.ParameterSettingDial
 
     def getModel(self):
         return self._model
+
+    def _getAmplitude(self):
+        return math.sqrt(2*math.pi)*self.sigmaValue.value()*self.maximumValue.value()

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>919</width>
+    <width>979</width>
     <height>172</height>
    </rect>
   </property>
@@ -147,7 +147,7 @@
      <item row="1" column="1">
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <item>
-        <widget class="QSlider" name="amplitudeSlider">
+        <widget class="QSlider" name="maximumSlider">
          <property name="minimum">
           <number>0</number>
          </property>
@@ -169,7 +169,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QDoubleSpinBox" name="amplitudeValue">
+        <widget class="QDoubleSpinBox" name="maximumValue">
          <property name="decimals">
           <number>2</number>
          </property>
@@ -195,7 +195,7 @@
         </spacer>
        </item>
        <item>
-        <widget class="QCheckBox" name="amplitudeFixedCB">
+        <widget class="QCheckBox" name="maximumFixedCB">
          <property name="text">
           <string>fixed</string>
          </property>
@@ -215,14 +215,14 @@
         </spacer>
        </item>
        <item>
-        <widget class="QCheckBox" name="useLBAmplitude">
+        <widget class="QCheckBox" name="useLBMaximum">
          <property name="text">
           <string>lower bound</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QDoubleSpinBox" name="amplitudeLBValue">
+        <widget class="QDoubleSpinBox" name="maximumLBValue">
          <property name="decimals">
           <number>2</number>
          </property>
@@ -248,14 +248,14 @@
         </spacer>
        </item>
        <item>
-        <widget class="QCheckBox" name="useUBAmplitude">
+        <widget class="QCheckBox" name="useUBMaximum">
          <property name="text">
           <string>upper bound</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QDoubleSpinBox" name="amplitudeUBValue">
+        <widget class="QDoubleSpinBox" name="maximumUBValue">
          <property name="decimals">
           <number>2</number>
          </property>
@@ -445,7 +445,7 @@
      <item row="1" column="0">
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>Amplitude value</string>
+        <string>Maximum value</string>
        </property>
       </widget>
      </item>
