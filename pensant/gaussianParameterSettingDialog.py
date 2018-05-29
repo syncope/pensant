@@ -27,11 +27,11 @@ class GaussianParameterSettingDialog(parameterSettingDialog.ParameterSettingDial
         super(GaussianParameterSettingDialog, self).__init__(**kw)
         self.passData(xdata, ydata)
         self.meanValue.valueChanged.connect(self._updateMean)
-        self.maximumValue.editingFinished.connect(self.updateFit.emit)
-        self.sigmaValue.editingFinished.connect(self.updateFit.emit)
-        self.meanSlider.valueChanged.connect(self._meanScaler)
-        self.maximumSlider.valueChanged.connect(self._maxScaler)
-        self.sigmaSlider.valueChanged.connect(self._sigmaScaler)
+        self.meanSlider.valueChanged.connect(self._updateMean)
+        self.maximumValue.valueChanged.connect(self._updateMaximum)
+        self.maximumSlider.valueChanged.connect(self._updateMaximum)
+        self.sigmaValue.valueChanged.connect(self._updateSigma)
+        self.sigmaSlider.valueChanged.connect(self._updateSigma)
         self._modelName = modelname
         self._model = model
         self._model.prefix = "m" + str(self._index) + "_"
@@ -42,16 +42,33 @@ class GaussianParameterSettingDialog(parameterSettingDialog.ParameterSettingDial
     def _guessingDone(self, **kw):
         self.guessingDone.emit()
         self.close(**kw)
-#~ 
-    #~ def _updateSigma(self,value):
-        #~ pass
-#~ 
-    #~ def _updateMaximum(self,value):
-        #~ pass
 
-    def _updateMean(self, value):
-        # pass the actual mean value and convert it into the display slider value
-        #~ self.meanSlider.setValue(int((value - self._meanBounds[0])/self.meanStep))
+    def _updateSigma(self,value):
+        if isinstance(value, int):
+            valuewidth = self.sigmaUBValue.value() - self.sigmaLBValue.value()
+            currentVal = (self.sigmaSlider.minimum() + float(value * self.sigmaSlider.singleStep()))/(self.sigmaSlider.maximum() - self.sigmaSlider.minimum())
+            self.sigmaValue.setValue(self.sigmaLBValue.value() + currentVal*valuewidth)
+        else:
+            self.sigmaSlider.setValue(round((value - self._sigmaBounds[0])/self.sigmaStep))
+        self.updateFit.emit()
+
+    def _updateMaximum(self,value):
+        if isinstance(value, int):
+            valuewidth = self.maximumUBValue.value() - self.maximumLBValue.value()
+            currentVal = (self.maximumSlider.minimum() + value * self.maximumSlider.singleStep())/(self.maximumSlider.maximum() - self.maximumSlider.minimum())
+            self.maximumValue.setValue(self.maximumLBValue.value() + currentVal*valuewidth)
+        else:
+            self.maximumSlider.setValue(round((value - self._maximumBounds[0])/self.maximumStep))
+        self.updateFit.emit()
+
+    def _updateMean(self, value=None):
+        # ugly as hell, but maybe the only way??: check for type. if int, the call came from slider
+        if isinstance(value, int):
+            valuewidth = self._meanBounds[1]-self._meanBounds[0]
+            currentVal = (self.meanSlider.minimum() + float(value * self.meanSlider.singleStep()))/(self.meanSlider.maximum() - self.meanSlider.minimum())
+            self.meanValue.setValue(self._meanBounds[0] + currentVal*valuewidth)
+        else:
+            self.meanSlider.setValue(round((value - self._meanBounds[0])/self.meanStep))
         self.updateFit.emit()
 
 
@@ -76,16 +93,16 @@ class GaussianParameterSettingDialog(parameterSettingDialog.ParameterSettingDial
         self.meanLBValue.setDecimals(meanAcc)
         self.meanUBValue.setDecimals(meanAcc)
 
-        maximumStep =(self._maximumBounds[1] - self._maximumBounds[0])/(self.maximumSlider.maximum()-self.maximumSlider.minimum())
-        self.maximumValue.setSingleStep(maximumStep/5.)
-        maximumAcc = math.floor(math.fabs(math.log10(maximumStep)))+2
+        self.maximumStep =(self._maximumBounds[1] - self._maximumBounds[0])/(self.maximumSlider.maximum()-self.maximumSlider.minimum())
+        self.maximumValue.setSingleStep(self.maximumStep/5.)
+        maximumAcc = math.floor(math.fabs(math.log10(self.maximumStep)))+2
         self.maximumValue.setDecimals(maximumAcc)
         self.maximumLBValue.setDecimals(maximumAcc)
         self.maximumUBValue.setDecimals(maximumAcc)
 
-        sigmaStep =(self._sigmaBounds[1] - self._sigmaBounds[0])/(self.sigmaSlider.maximum()-self.sigmaSlider.minimum())
-        self.sigmaValue.setSingleStep(sigmaStep/5.)
-        sigmaAcc = math.floor(math.fabs(math.log10(sigmaStep)))+2
+        self.sigmaStep =(self._sigmaBounds[1] - self._sigmaBounds[0])/(self.sigmaSlider.maximum()-self.sigmaSlider.minimum())
+        self.sigmaValue.setSingleStep(self.sigmaStep/5.)
+        sigmaAcc = math.floor(math.fabs(math.log10(self.sigmaStep)))+2
         self.sigmaValue.setDecimals(sigmaAcc)
         self.sigmaLBValue.setDecimals(sigmaAcc)
         self.sigmaUBValue.setDecimals(sigmaAcc)
@@ -108,37 +125,46 @@ class GaussianParameterSettingDialog(parameterSettingDialog.ParameterSettingDial
 
         self.updateFit.emit()
 
-    def _meanScaler(self, val):
-        valuewidth = self._meanBounds[1]-self._meanBounds[0]
-        currentVal = (self.meanSlider.minimum() + float(val * self.meanSlider.singleStep()))/(self.meanSlider.maximum() - self.meanSlider.minimum())
-        self.meanValue.setValue(self._meanBounds[0] + currentVal*valuewidth)
-        self.updateFit.emit()
-
-    def _maxScaler(self, val):
-        valuewidth = self.maximumUBValue.value() - self.maximumLBValue.value()
-        currentVal = (self.maximumSlider.minimum() + val * self.maximumSlider.singleStep())/(self.maximumSlider.maximum() - self.maximumSlider.minimum())
-        self.maximumValue.setValue(self.maximumLBValue.value() + currentVal*valuewidth)
-        self.updateFit.emit()
-
-    def _sigmaScaler(self, val):
-        valuewidth = self.sigmaUBValue.value() - self.sigmaLBValue.value()
-        currentVal = (self.sigmaSlider.minimum() + float(val * self.sigmaSlider.singleStep()))/(self.sigmaSlider.maximum() - self.sigmaSlider.minimum())
-        self.sigmaValue.setValue(self.sigmaLBValue.value() + currentVal*valuewidth)
-        self.updateFit.emit()
-
     def getCurrentFitData(self):
-        self._parameters = self._model.make_params(center=self.meanValue.value(), amplitude=self._getAmplitude(), sigma=self.sigmaValue.value())
+        self._parameters = self._model.make_params(center=self.meanValue.value(), amplitude= self._conversionFactorMaximumToAmplitude()*self.maximumValue.value(), sigma=self.sigmaValue.value())
         return self._model.eval(self._parameters, x=self._xdata)
 
     def automaticGuess(self):
         print("i'm guessing by the book")
 
     def getCurrentParameterDict(self):
+        centerdict = {}
+        centerdict['value'] = self.meanValue.value()
+        if( self.meanFixedCB.isChecked() ):
+            centerdict['vary'] = False
+        if ( self.useLBMean.isChecked() ):
+            centerdict['min'] = self.meanLBValue.value()
+        if ( self.useUBMean.isChecked() ):
+            centerdict['max'] = self.meanUBValue.value()
+
+        sigmadict = {}
+        sigmadict['value'] = self.sigmaValue.value()
+        if( self.sigmaFixedCB.isChecked() ):
+            sigmadict['vary'] = False
+        if ( self.useLBSigma.isChecked() ):
+            sigmadict['min'] = self.sigmaLBValue.value()
+        if ( self.useUBSigma.isChecked() ):
+            sigmadict['max'] = self.sigmaUBValue.value()
+        
+        amplitudedict = {}
+        amplitudedict['value'] = self._conversionFactorMaximumToAmplitude()*self.maximumValue.value()
+        if( self.maximumFixedCB.isChecked() ):
+            amplitudedict['vary'] = False
+        if ( self.useLBMaximum.isChecked() ):
+            amplitudedict['min'] = self._conversionFactorMaximumToAmplitude()*self.maximumLBValue.value()
+        if ( self.useUBMaximum.isChecked() ):
+            amplitudedict['max'] = self._conversionFactorMaximumToAmplitude()*self.maximumUBValue.value()
+
         pdict = { self._model.prefix :
                     { 'modeltype': 'gaussianModel',
-                     'center': {'value' : self.meanValue.value(), 'vary': ( not self.meanFixedCB.isChecked()) },
-                     'sigma' : {'value' : self.sigmaValue.value(), 'vary': (not self.sigmaFixedCB.isChecked()) },
-                     'amplitude' : {'value' : self._getAmplitude(), 'vary': not self.maximumFixedCB.isChecked() } 
+                     'center': centerdict,
+                     'sigma' : sigmadict,
+                     'amplitude' : amplitudedict,
                     }
                 }
         return pdict
@@ -149,5 +175,5 @@ class GaussianParameterSettingDialog(parameterSettingDialog.ParameterSettingDial
     def getModel(self):
         return self._model
 
-    def _getAmplitude(self):
-        return math.sqrt(2*math.pi)*self.sigmaValue.value()*self.maximumValue.value()
+    def _conversionFactorMaximumToAmplitude(self):
+        return math.sqrt(2*math.pi)*self.sigmaValue.value()
