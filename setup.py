@@ -37,10 +37,16 @@ setup(
 
     keywords='pensant parameter estimation lmfit',
     
-    packages=['pensant',],
+    packages=['pensant'],
     
     package_dir = { 'pensant':'pensant',},
-    
+    package_data = {'pensant' : ['ui/*.ui']},
+    #~ data_files = [ ('ui', ['ui/constantModelFitParameters.ui',
+                           #~ 'ui/gaussModelFitParameters.ui',
+                           #~ 'ui/linearModelFitParameters.ui',
+                           #~ 'ui/lorentzianModelFitParameters.ui',
+                           #~ 'ui/quadraticModelFitParameters.ui']) ],
+    #~ 
     include_package_data=True,
     
 )
