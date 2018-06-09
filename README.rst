@@ -2,7 +2,7 @@ PENSANT: Parameter estimation helpers
 -------------------------------------
 
 This package provides additional functionality to the lmfit package.
-lmfit :  https://dx.doi.org/10.5281/zenodo.11813
+lmfit :  https://doi.org/10.5281/zenodo.11813
 Its main purpose is to add GUI elements by pyqt graphics.
 It also provides an additional interface to create composite models with automatic naming schemes.
 
