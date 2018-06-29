@@ -1,0 +1,10 @@
+#!/usr/bin/make -f
+
+override_dh_auto_build:
+
+override_dh_auto_install:
+	python3  setup.py install --no-compile --install-layout=deb --root=$(shell pwd)/debian/tmp
+
+
+%:
+	dh $@ --with python3

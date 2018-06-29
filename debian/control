@@ -1,0 +1,23 @@
+Source: pensant
+Maintainer: Christoph Rosemann <christoph.rosemann@desy.de>
+Uploaders: Johannes Blume <johannes.blume@desy.de>
+Section: science
+Priority: extra
+Build-Depends: debhelper (>= 9), dh-python, python3-all-dev
+Standards-Version: 3.9.8
+
+Package: python3-pensant
+Architecture: any
+Section: python
+Depends: ${misc:Depends},
+         ${python:Depends},
+         python3-numpy,
+         python3-pyqt4,
+         python3-lmfit
+Description: package provides additional functionality to lmfit
+ This package provides additional functionality to the lmfit package.
+ Its main purpose is to add GUI elements by pyqt graphics.
+ It also provides an additional interface to create
+ composite models with automatic naming schemes.
+ The package is for Python3.
+
