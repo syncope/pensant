@@ -40,7 +40,7 @@ class LinearParameterSettingDialog(parameterSettingDialog.ParameterSettingDialog
         self.close(**kw)
 
     def update(self):
-        # first basic calculations 
+        # first basic calculations
         self._slopeDisplay = float(np.mean(self._ydata))/float(np.mean(self._xdata))
         self._slopeBounds = (10*self._slopeDisplay, -10*self._slopeDisplay)
         self._interceptDisplay = 0.
@@ -53,13 +53,12 @@ class LinearParameterSettingDialog(parameterSettingDialog.ParameterSettingDialog
         #~ self.slopeValue.setDecimals(slopeAcc)
         #~ self.slopeLBValue.setDecimals(slopeAcc)
         #~ self.slopeUBValue.setDecimals(slopeAcc)
-#~ 
+#~
         #~ interceptStep =(self._interceptBounds[1] - self._interceptBounds[0])/(self.interceptSlider.maximum()-self.interceptSlider.minimum())
         #~ interceptAcc = math.floor(math.fabs(math.log10(interceptStep)))+2
         #~ self.interceptValue.setDecimals(interceptAcc)
         #~ self.interceptLBValue.setDecimals(interceptAcc)
         #~ self.interceptUBValue.setDecimals(interceptAcc)
-        #~ 
 
         # now set initial values
         self.slopeValue.setValue(self._slopeDisplay)
@@ -74,7 +73,6 @@ class LinearParameterSettingDialog(parameterSettingDialog.ParameterSettingDialog
         self.interceptUBValue.setValue(self._interceptBounds[1])
 
         self.updateFit.emit()
-
 
     def _interceptScaler(self, val):
         valuewidth = self.interceptUBValue.value() - self.interceptLBValue.value()
@@ -96,12 +94,12 @@ class LinearParameterSettingDialog(parameterSettingDialog.ParameterSettingDialog
         print("i'm guessing by the book")
 
     def getCurrentParameterDict(self):
-        pdict = { self._model.prefix :
-                    { 'modeltype': 'linearModel',
-                     'intercept' : {'value' : self.interceptValue.value(), 'vary': (not self.interceptFixedCB.isChecked()) },
-                     'slope' : {'value' : self.slopeValue.value(), 'vary': (not self.slopeFixedCB.isChecked()) },
-                    }
-                }
+        pdict = {self._model.prefix:
+                 {'modeltype': 'linearModel',
+                  'intercept': {'value': self.interceptValue.value(), 'vary': (not self.interceptFixedCB.isChecked())},
+                  'slope': {'value': self.slopeValue.value(), 'vary': (not self.slopeFixedCB.isChecked())},
+                  }
+                 }
         return pdict
 
     def getName(self):
@@ -109,4 +107,3 @@ class LinearParameterSettingDialog(parameterSettingDialog.ParameterSettingDialog
 
     def getModel(self):
         return self._model
-

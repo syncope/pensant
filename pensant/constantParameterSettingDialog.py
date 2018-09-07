@@ -20,6 +20,7 @@ from . import parameterSettingDialog
 import numpy as np
 import math
 
+
 class ConstantParameterSettingDialog(parameterSettingDialog.ParameterSettingDialog):
 
     def __init__(self, modelname, xdata, ydata, model=None, **kw):
@@ -39,14 +40,14 @@ class ConstantParameterSettingDialog(parameterSettingDialog.ParameterSettingDial
         self.close(**kw)
 
     def update(self):
-        # first basic calculations 
+        # first basic calculations
         self._constDisplay = float(np.mean(self._ydata))
         self._constBounds = (float(np.amin(self._ydata)), float(np.amax(self._ydata)))
 
         # first fix the accuracy of the display
         # number of steps;
-        constStep =(self._constBounds[1] - self._constBounds[0])/(self.constSlider.maximum()-self.constSlider.minimum())
-        constAcc = math.floor(math.fabs(math.log10(constStep)))+2
+        constStep = (self._constBounds[1] - self._constBounds[0]) / (self.constSlider.maximum() - self.constSlider.minimum())
+        constAcc = math.floor(math.fabs(math.log10(constStep))) + 2
         self.constValue.setDecimals(constAcc)
         self.constLBValue.setDecimals(constAcc)
         self.constUBValue.setDecimals(constAcc)
@@ -74,11 +75,11 @@ class ConstantParameterSettingDialog(parameterSettingDialog.ParameterSettingDial
         print("i'm guessing by the book")
 
     def getCurrentParameterDict(self):
-        pdict = { self._model.prefix :
-                    { 'modeltype': 'constantModel',
-                     'c': {'value' : self.constValue.value(), 'vary': ( not self.constFixedCB.isChecked()) },
-                    }
-                }
+        pdict = {self._model.prefix:
+                 {'modeltype': 'constantModel',
+                  'c': {'value': self.constValue.value(), 'vary': (not self.constFixedCB.isChecked())},
+                  }
+                 }
         return pdict
 
     def getName(self):
@@ -86,4 +87,3 @@ class ConstantParameterSettingDialog(parameterSettingDialog.ParameterSettingDial
 
     def getModel(self):
         return self._model
-

@@ -46,8 +46,8 @@ class gaussian(GaussianModel):
         return self._widget
 
     def guess(self, data, **kw):
-        pass # does not work accurately
-
+        # does not work accurately
+        pass
 
 
 class lorentzian(LorentzianModel):
@@ -59,8 +59,7 @@ class lorentzian(LorentzianModel):
         return self._widget
 
     def guess(self, data, **kw):
-        return super(lorentzian, self).guess(data, **kw)        
-
+        return super(lorentzian, self).guess(data, **kw)
 
 
 class psv(PseudoVoigtModel):
@@ -68,8 +67,7 @@ class psv(PseudoVoigtModel):
         super(psv, self).__init__(**kwargs)
 
     def guess(self, data, **kw):
-        return super(psv, self).guess(data, **kw)        
-
+        return super(psv, self).guess(data, **kw)
 
 
 class linear(LinearModel):
@@ -81,8 +79,7 @@ class linear(LinearModel):
         return self._widget
 
     def guess(self, data, **kw):
-        return super(linear, self).guess(data, **kw)        
-
+        return super(linear, self).guess(data, **kw)
 
 
 class quadratic(QuadraticModel):
@@ -94,31 +91,28 @@ class quadratic(QuadraticModel):
         return self._widget
 
     def guess(self, data, **kw):
-        return super(quadratic, self).guess(data, **kw)        
-
+        return super(quadratic, self).guess(data, **kw)
 
 
 class constant(ConstantModel):
     def __init__(self, **kwargs):
-        super(constant, self).__init__(**kwargs)    
+        super(constant, self).__init__(**kwargs)
 
     def getWidget(self, xdata=None, ydata=None, index=None):
         self._widget = modelWidgeteer("constantModel", self, "ui/constantModelFitParameters.ui", xdata, ydata, index)
         return self._widget
 
     def guess(self, data, **kw):
-        return super(constant, self).guess(data, **kw)        
+        return super(constant, self).guess(data, **kw)
 
 
-
-FitModels = { "constantModel" : constant,
-              "linearModel" : linear,
-              "quadraticModel" : quadratic,
-              "gaussianModel" : gaussian,
-              "lorentzianModel" : lorentzian,
-              #~ "psvModel" : psv,
-            }
-
+FitModels = {"constantModel": constant,
+             "linearModel": linear,
+             "quadraticModel": quadratic,
+             "gaussianModel": gaussian,
+             "lorentzianModel": lorentzian,
+             # "psvModel" : psv,
+             }
 
 
 def modelWidgeteer(model, fitModel, uiFilename, xdata, ydata, index):
@@ -137,4 +131,3 @@ def modelWidgeteer(model, fitModel, uiFilename, xdata, ydata, index):
         return quadraticParameterSettingDialog.QuadraticParameterSettingDialog(model, xdata, ydata, fitModel, index=index, uifile=formfile)
     else:
         return parameterSettingDialog.ParameterSettingDialog(uifile=formfile)
-

@@ -41,7 +41,7 @@ class QuadraticParameterSettingDialog(parameterSettingDialog.ParameterSettingDia
         self.close(**kw)
 
     def update(self):
-        # first basic calculations 
+        # first basic calculations
         self._aDisplay = float(np.mean(self._ydata))
         self._aBounds = (float(np.amin(self._ydata)), float(np.amax(self._ydata)))
         self._bDisplay = float(np.mean(self._ydata))/float(np.mean(self._xdata))
@@ -51,24 +51,23 @@ class QuadraticParameterSettingDialog(parameterSettingDialog.ParameterSettingDia
 
         # first fix the accuracy of the display
         # number of steps;
-        aStep =(self._aBounds[1] - self._aBounds[0])/(self.aSlider.maximum()-self.aSlider.minimum())
+        aStep = (self._aBounds[1] - self._aBounds[0])/(self.aSlider.maximum()-self.aSlider.minimum())
         aAcc = math.floor(math.fabs(math.log10(aStep)))+2
         self.aValue.setDecimals(aAcc)
         self.aLBValue.setDecimals(aAcc)
         self.aUBValue.setDecimals(aAcc)
 
-        bStep =(self._bBounds[1] - self._bBounds[0])/(self.bSlider.maximum()-self.bSlider.minimum())
+        bStep = (self._bBounds[1] - self._bBounds[0])/(self.bSlider.maximum()-self.bSlider.minimum())
         bAcc = math.floor(math.fabs(math.log10(bStep)))+2
         self.bValue.setDecimals(bAcc)
         self.bLBValue.setDecimals(bAcc)
         self.bUBValue.setDecimals(bAcc)
 
-        cStep =(self._cBounds[1] - self._cBounds[0])/(self.cSlider.maximum()-self.cSlider.minimum())
+        cStep = (self._cBounds[1] - self._cBounds[0])/(self.cSlider.maximum()-self.cSlider.minimum())
         cAcc = math.floor(math.fabs(math.log10(cStep)))+2
         self.cValue.setDecimals(cAcc)
         self.cLBValue.setDecimals(cAcc)
         self.cUBValue.setDecimals(cAcc)
-        
 
         # now set initial values
         self.aValue.setValue(self._aDisplay)
@@ -114,13 +113,13 @@ class QuadraticParameterSettingDialog(parameterSettingDialog.ParameterSettingDia
         print("i'm guessing by the book")
 
     def getCurrentParameterDict(self):
-        pdict = { self._model.prefix :
-                    { 'modeltype': 'quadraticModel',
-                     'a' : {'value' : self.aValue.value(), 'vary': (not self.aFixedCB.isChecked()) },
-                     'b' : {'value' : self.bValue.value(), 'vary': (not self.bFixedCB.isChecked()) },
-                     'c' : {'value' : self.cValue.value(), 'vary': (not self.cFixedCB.isChecked()) } 
-                    }
-                }
+        pdict = {self._model.prefix:
+                 {'modeltype': 'quadraticModel',
+                  'a': {'value': self.aValue.value(), 'vary': (not self.aFixedCB.isChecked())},
+                  'b': {'value': self.bValue.value(), 'vary': (not self.bFixedCB.isChecked())},
+                  'c': {'value': self.cValue.value(), 'vary': (not self.cFixedCB.isChecked())}
+                  }
+                 }
         return pdict
 
     def getName(self):
@@ -128,4 +127,3 @@ class QuadraticParameterSettingDialog(parameterSettingDialog.ParameterSettingDia
 
     def getModel(self):
         return self._model
-

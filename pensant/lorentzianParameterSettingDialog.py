@@ -41,7 +41,7 @@ class LorentzianParameterSettingDialog(parameterSettingDialog.ParameterSettingDi
         self.close(**kw)
 
     def update(self):
-        # first basic calculations 
+        # first basic calculations
         self._centerDisplay = float(np.mean(self._xdata))
         self._centerBounds = (float(np.amin(self._xdata)), float(np.amax(self._xdata)))
         self._sigmaDisplay = float(np.amax(self._xdata) - np.amin(self._xdata))/10.
@@ -51,24 +51,23 @@ class LorentzianParameterSettingDialog(parameterSettingDialog.ParameterSettingDi
 
         # first fix the accuracy of the display
         # number of steps;
-        centerStep =(self._centerBounds[1] - self._centerBounds[0])/(self.centerSlider.maximum()-self.centerSlider.minimum())
+        centerStep = (self._centerBounds[1] - self._centerBounds[0])/(self.centerSlider.maximum()-self.centerSlider.minimum())
         centerAcc = math.floor(math.fabs(math.log10(centerStep)))+2
         self.centerValue.setDecimals(centerAcc)
         self.centerLBValue.setDecimals(centerAcc)
         self.centerUBValue.setDecimals(centerAcc)
 
-        amplitudeStep =(self._amplitudeBounds[1] - self._amplitudeBounds[0])/(self.amplitudeSlider.maximum()-self.amplitudeSlider.minimum())
+        amplitudeStep = (self._amplitudeBounds[1] - self._amplitudeBounds[0])/(self.amplitudeSlider.maximum()-self.amplitudeSlider.minimum())
         amplitudeAcc = math.floor(math.fabs(math.log10(amplitudeStep)))+2
         self.amplitudeValue.setDecimals(amplitudeAcc)
         self.amplitudeLBValue.setDecimals(amplitudeAcc)
         self.amplitudeUBValue.setDecimals(amplitudeAcc)
 
-        sigmaStep =(self._sigmaBounds[1] - self._sigmaBounds[0])/(self.sigmaSlider.maximum()-self.sigmaSlider.minimum())
+        sigmaStep = (self._sigmaBounds[1] - self._sigmaBounds[0])/(self.sigmaSlider.maximum()-self.sigmaSlider.minimum())
         sigmaAcc = math.floor(math.fabs(math.log10(sigmaStep)))+2
         self.sigmaValue.setDecimals(sigmaAcc)
         self.sigmaLBValue.setDecimals(sigmaAcc)
         self.sigmaUBValue.setDecimals(sigmaAcc)
-        
 
         # now set initial values
         self.centerValue.setValue(self._centerDisplay)
@@ -114,13 +113,13 @@ class LorentzianParameterSettingDialog(parameterSettingDialog.ParameterSettingDi
         print("i'm guessing by the book")
 
     def getCurrentParameterDict(self):
-        pdict = { self._model.prefix :
-                    { 'modeltype': 'lorentzianModel',
-                     'center': {'value' : self.centerValue.value(), 'vary': ( not self.centerFixedCB.isChecked()) },
-                     'sigma' : {'value' : self.sigmaValue.value(), 'vary': (not self.sigmaFixedCB.isChecked()) },
-                     'amplitude' : {'value' : self.amplitudeValue.value(), 'vary': not self.amplitudeFixedCB.isChecked() } 
-                    }
-                }
+        pdict = {self._model.prefix:
+                 {'modeltype': 'lorentzianModel',
+                  'center': {'value': self.centerValue.value(), 'vary': (not self.centerFixedCB.isChecked())},
+                  'sigma': {'value': self.sigmaValue.value(), 'vary': (not self.sigmaFixedCB.isChecked())},
+                  'amplitude': {'value': self.amplitudeValue.value(), 'vary': not self.amplitudeFixedCB.isChecked()}
+                  }
+                 }
         return pdict
 
     def getName(self):
@@ -128,4 +127,3 @@ class LorentzianParameterSettingDialog(parameterSettingDialog.ParameterSettingDi
 
     def getModel(self):
         return self._model
-#~ 
