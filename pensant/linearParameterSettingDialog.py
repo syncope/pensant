@@ -33,6 +33,7 @@ class LinearParameterSettingDialog(parameterSettingDialog.ParameterSettingDialog
         self._model.prefix = "m" + str(self._index) + "_"
         self._parameters = None
         self.guessStartValuesBtn.clicked.connect(print)
+        self.guessStartValuesBtn.hide()
         self.configDonePushBtn.clicked.connect(self._guessingDone)
 
     def _guessingDone(self, **kw):
