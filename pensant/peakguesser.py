@@ -21,6 +21,7 @@
 import numpy as np
 from scipy.interpolate import UnivariateSpline
 
+
 class peakGuesser():
     def __init__(self):
         pass
@@ -31,7 +32,7 @@ class peakGuesser():
         peakx = xdata[index]
         halfpeaky = peaky/2.
         f = UnivariateSpline(xdata, ydata-peaky/2., k=3)
-        w1,w2 = f.roots()
+        w1, w2 = f.roots()
         fwhm = w2 - w1
         return peakx, fwhm, peaky
 
@@ -43,8 +44,8 @@ class peakGuesser():
     #~ pg = peakGuesser()
     #~ def gaussian(x, mu=5, sig=1.2, a=1):
         #~ return a/(math.sqrt(2*3.1415)*sig)*np.exp(-np.power(x - mu, 2.) / (2 * np.power(sig, 2.)))
-#~ 
-#~ 
+#~
+#~
     #~ for n in range(100000):
         #~ x = np.arange(0, 10)
         #~ y = gaussian(x)
@@ -53,4 +54,3 @@ class peakGuesser():
         #~ import pyqtgraph as pq
         #~ w = pq.plot(x,y, pen=None, symbolPen='w', symbolBrush='w', symbol='+')
         #~ w.plot(x, gaussian(x, mu=m, sig=f/2.354, a=a*math.sqrt(2*3.1415)*f/2.354))
-    

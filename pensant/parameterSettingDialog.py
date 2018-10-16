@@ -18,6 +18,7 @@
 
 from PyQt4 import QtCore, QtGui, uic
 
+
 class ParameterSettingDialog(QtGui.QDialog):
     updateFit = QtCore.pyqtSignal()
     guessingDone = QtCore.pyqtSignal()
@@ -40,7 +41,7 @@ class ParameterSettingDialog(QtGui.QDialog):
 
 
 class guiParameter():
-    
+
     def __init__(self, val=None, lowlim=None, uplim=None):
         self.lowerLimit = lowlim
         self.upperLimit = uplim
@@ -62,8 +63,7 @@ class guiParameter():
             self.currentValue = uplim
 
     def check(self):
-        if self.currentValue >  self.upperLimit:
-            self.currentValue =  self.upperLimit
+        if self.currentValue > self.upperLimit:
+            self.currentValue = self.upperLimit
         elif self.currentValue < self.lowerLimit:
             self.currentValue = self.lowerLimit
-

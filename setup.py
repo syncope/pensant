@@ -8,11 +8,11 @@ with open(path.join('.', 'README.rst'), encoding='utf-8') as f:
 
 name='pensant'
 version='0'
-release='0.0.3'
+release='0.0.5'
 
 setup(
     name='pensant',
-    version='0.0.3',
+    version='0.0.5',
 
     description='Library to simplify handling parameter estimation, also providing GUI elements within pyqt.', 
     long_description=long_description,
