@@ -1,8 +1,8 @@
-pensant (0.0.3-1+deb8u10~fsec) jessie; urgency=low
+pensant (0.0.3-1+deb9u5~fsec) stretch; urgency=low
 
-  * Initial release
+  * Initial release for Debian 9/stretch
 
- -- Johannes Blume <johannes.blume@desy.de>  Fri, 08 Jun 2018 15:47:00 +0200
+ -- Christoph Rosemann <christoph.rosemann@desy.de>  Tue, 16 Oct 2018 17:43:00 +0200
 
 
 
