@@ -1,3 +1,9 @@
+pensant (0.0.6-1+deb9u5~fsec) stretch; urgency=low
+
+  * New version because the changes for Debian 9 were not present.
+
+ -- Christoph Rosemann <christoph.rosemann@desy.de>  Fri, 19 Oct 2018 15:27:00 +0200
+
 pensant (0.0.5-1+deb9u5~fsec) stretch; urgency=low
 
   * Initial release for Debian 9/stretch
