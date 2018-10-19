@@ -34,7 +34,7 @@ class GaussianParameterSettingDialog(parameterSettingDialog.ParameterSettingDial
         self.sigmaSlider.valueChanged.connect(self._updateSigma)
         self._modelName = modelname
         self._model = model
-        self._model.prefix = "m" + str(self._index) + "_"
+        self._model._prefix = str("m" + str(self._index) + "_")
         self._parameters = None
         self.guessStartValuesBtn.clicked.connect(print)
         self.guessStartValuesBtn.hide()
