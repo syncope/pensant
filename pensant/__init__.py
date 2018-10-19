@@ -25,4 +25,4 @@ from . import linearParameterSettingDialog
 from . import lorentzianParameterSettingDialog
 from . import quadraticParameterSettingDialog
 
-__version__ = "0.0.5"
+__version__ = "0.0.6"
