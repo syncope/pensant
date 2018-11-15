@@ -18,11 +18,10 @@
 
 # extension to lmfit, by subclassing the (most?) relevant models
 
-
-from lmfit import Model
-from lmfit.models import PseudoVoigtModel, LorentzianModel, GaussianModel
-from lmfit.models import ConstantModel, LinearModel, QuadraticModel
-from lmfit.models import PolynomialModel, ExponentialModel
+from pensant.plmfit import Model
+from pensant.plmfit.models import PseudoVoigtModel, LorentzianModel, GaussianModel
+from pensant.plmfit.models import ConstantModel, LinearModel, QuadraticModel
+from pensant.plmfit.models import PolynomialModel, ExponentialModel
 
 from PyQt4 import QtCore, QtGui, uic
 import numpy as np
