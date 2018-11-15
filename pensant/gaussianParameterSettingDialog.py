@@ -23,7 +23,7 @@ import math
 
 class GaussianParameterSettingDialog(parameterSettingDialog.ParameterSettingDialog):
 
-    def __init__(self, modelname, xdata, ydata, model=None, **kw):
+    def __init__(self, modelname, xdata, ydata, model, **kw):
         super(GaussianParameterSettingDialog, self).__init__(**kw)
         self.passData(xdata, ydata)
         self.meanValue.valueChanged.connect(self._updateMean)
@@ -34,8 +34,8 @@ class GaussianParameterSettingDialog(parameterSettingDialog.ParameterSettingDial
         self.sigmaSlider.valueChanged.connect(self._updateSigma)
         self._modelName = modelname
         self._model = model
-        self._model._prefix = str("m" + str(self._index) + "_")
         self._parameters = None
+        self._model.prefix = str("m" + str(self._index) + "_")
         self.guessStartValuesBtn.clicked.connect(print)
         self.guessStartValuesBtn.hide()
         self.configDonePushBtn.clicked.connect(self._guessingDone)
