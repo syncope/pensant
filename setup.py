@@ -8,7 +8,7 @@ with open(path.join('.', 'README.rst'), encoding='utf-8') as f:
 
 name='pensant'
 version='0'
-release='0.0.6'
+release='0.0.8'
 
 setup(
     name=name,
@@ -37,6 +37,7 @@ setup(
 
     keywords='pensant parameter estimation lmfit',
     
+    #packages=['pensant','pensant.plmfit'],
     packages=['pensant'],
     
     package_dir = { 'pensant':'pensant',},
