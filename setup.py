@@ -37,9 +37,8 @@ setup(
 
     keywords='pensant parameter estimation lmfit',
     
-    #packages=['pensant','pensant.plmfit'],
-    packages=['pensant'],
-    
+    packages=['pensant','pensant.plmfit'],
+        
     package_dir = { 'pensant':'pensant',},
     include_package_data=True,
     
