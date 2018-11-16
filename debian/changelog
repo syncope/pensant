@@ -1,3 +1,9 @@
+pensant (0.0.10-1+deb9u5~fsec) stretch; urgency=low
+
+  * Another subdirectory included.
+
+ -- Christoph Rosemann <christoph.rosemann@desy.de>  Fri, 16 Nov 2018 11:39:00 +0100
+
 pensant (0.0.9-1+deb9u5~fsec) stretch; urgency=low
 
   * No, NOW updated setup.py to include the new subdirectory.
