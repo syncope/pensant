@@ -1,3 +1,9 @@
+pensant (0.0.11-1+deb9u5~fsec) stretch; urgency=low
+
+  * Deja-vu: another subdirectory included (!?).
+
+ -- Christoph Rosemann <christoph.rosemann@desy.de>  Mon, 19 Nov 2018 14:37:00 +0100
+
 pensant (0.0.10-1+deb9u5~fsec) stretch; urgency=low
 
   * Another subdirectory included.
