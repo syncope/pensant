@@ -23,7 +23,7 @@ class ParameterSettingDialog(QtGui.QDialog):
     updateFit = QtCore.pyqtSignal()
     guessingDone = QtCore.pyqtSignal()
 
-    def __init__(self, uifile, index=None, parent=None):
+    def __init__(self, uifile, index='0', parent=None):
         super(ParameterSettingDialog, self).__init__(parent)
         uic.loadUi(uifile, self)
         self._index = index
