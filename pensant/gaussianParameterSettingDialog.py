@@ -39,6 +39,13 @@ class GaussianParameterSettingDialog(parameterSettingDialog.ParameterSettingDial
         self.guessStartValuesBtn.clicked.connect(print)
         self.guessStartValuesBtn.hide()
         self.configDonePushBtn.clicked.connect(self._guessingDone)
+        self._checkMaxima()
+
+    def _checkMaxima(self):
+        datamax = np.amax(self._ydata)
+        if self.maximumValue.maximum() <= datamax:
+            self.maximumValue.setMaximum(datamax*1000)
+            self.maximumUBValue.setMaximum(datamax*1000)
 
     def _guessingDone(self, **kw):
         self.guessingDone.emit()
