@@ -114,12 +114,7 @@ class GaussianParameterSettingDialog(parameterSettingDialog.ParameterSettingDial
         self.sigmaLBValue.setDecimals(sigmaAcc)
         self.sigmaUBValue.setDecimals(sigmaAcc)
 
-        # now set initial values
-        self.meanValue.setValue(self._meanDisplay)
-        self.maximumValue.setValue(self._maximumDisplay)
-        self.sigmaValue.setValue(self._sigmaDisplay)
-
-        # and now the boundaries -- as valid for the slider
+        # first set the boundaries -- as valid for the slider
         # mean:
         self.meanLBValue.setValue(self._meanBounds[0])
         self.meanUBValue.setValue(self._meanBounds[1])
@@ -129,6 +124,11 @@ class GaussianParameterSettingDialog(parameterSettingDialog.ParameterSettingDial
         # sigma
         self.sigmaLBValue.setValue(self._sigmaBounds[0])
         self.sigmaUBValue.setValue(self._sigmaBounds[1])
+
+        # and now set initial values -- need to be within the boundaries
+        self.meanValue.setValue(self._meanDisplay)
+        self.maximumValue.setValue(self._maximumDisplay)
+        self.sigmaValue.setValue(self._sigmaDisplay)
 
         self.updateFit.emit()
 
