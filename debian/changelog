@@ -1,3 +1,9 @@
+pensant (0.0.13-1+deb9u6~fsec) stretch; urgency=low
+
+  * Fixed ranges to accomodate also very large statistics..
+
+ -- Christoph Rosemann <christoph.rosemann@desy.de>  Wed, 13 Feb 2019 15:21:00 +0100
+
 pensant (0.0.12-1+deb9u5~fsec) stretch; urgency=low
 
   * Extended fitting to extend ranges of values if insufficient.
