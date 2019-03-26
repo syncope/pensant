@@ -45,8 +45,11 @@ class peakGuesser():
         peakx = xdata[index]
         halfpeaky = peaky/2.
         f = UnivariateSpline(xdata, ydata-peaky/2., k=3)
-        w1, w2 = f.roots()
-        fwhm = w2 - w1
+        try:
+            w1, w2 = f.roots()
+            fwhm = w2 - w1
+        except:
+            fwhm = (np.amax(xdata) - np.amin(xdata))/2.
         return peakx, fwhm, fwhm*2.3548, peaky*0.16941663, peaky
 
 
