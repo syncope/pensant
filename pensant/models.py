@@ -50,7 +50,8 @@ class peakGuesser():
             fwhm = w2 - w1
         except:
             fwhm = (np.amax(xdata) - np.amin(xdata))/2.
-        return peakx, fwhm, fwhm*2.3548, peaky*0.16941663, peaky
+            print("peakguesser: fwhm replacement: " + str(fwhm))
+        return peakx, fwhm, fwhm/2.3548, peaky, peaky
 
 
 class gaussian(GaussianModel):
