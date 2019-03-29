@@ -1,4 +1,4 @@
-# Copyright (C) 2017-18  Christoph Rosemann, DESY, Notkestr. 85, D-22607 Hamburg
+# Copyright (C) 2017-19  Christoph Rosemann, DESY, Notkestr. 85, D-22607 Hamburg
 # email contact: christoph.rosemann@desy.de
 #
 # This program is free software; you can redistribute it and/or
@@ -25,4 +25,4 @@ from . import linearParameterSettingDialog
 from . import lorentzianParameterSettingDialog
 from . import quadraticParameterSettingDialog
 
-__version__ = "0.0.13"
+__version__ = "0.1.0"

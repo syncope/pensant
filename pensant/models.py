@@ -22,6 +22,7 @@ from pensant.plmfit import Model
 from pensant.plmfit.models import PseudoVoigtModel, LorentzianModel, GaussianModel
 from pensant.plmfit.models import ConstantModel, LinearModel, QuadraticModel
 from pensant.plmfit.models import PolynomialModel, ExponentialModel
+from pensant.plmfit.parameter import Parameters
 
 from PyQt4 import QtCore, QtGui, uic
 import numpy as np
@@ -34,6 +35,23 @@ from . import lorentzianParameterSettingDialog
 from . import parameterSettingDialog
 from . import quadraticParameterSettingDialog
 
+from scipy.interpolate import UnivariateSpline
+
+class peakGuesser():
+
+    def guessMeanFwhmSigmaHeightAmplitude(self, xdata, ydata):
+        peaky = np.amax(ydata)
+        index = np.where(ydata == peaky)[0][0]
+        peakx = xdata[index]
+        halfpeaky = peaky/2.
+        f = UnivariateSpline(xdata, ydata-peaky/2., k=3)
+        try:
+            w1, w2 = f.roots()
+            fwhm = w2 - w1
+        except:
+            fwhm = (np.amax(xdata) - np.amin(xdata))/2.
+        return peakx, fwhm, fwhm/2.3548, peaky, peaky
+
 
 class gaussian(GaussianModel):
     def __init__(self, **kwargs):
@@ -44,9 +62,16 @@ class gaussian(GaussianModel):
         self._widget = modelWidgeteer("gaussianModel", self, "ui/gaussModelFitParameters.ui", xdata, ydata, index)
         return self._widget
 
-    def guess(self, data, **kw):
-        # does not work accurately
-        pass
+    def gaussguess(self, xdata, ydata):
+        guesser = peakGuesser()
+        params = Parameters()
+        guessparams = guesser.guessMeanFwhmSigmaHeightAmplitude(xdata, ydata)
+        params.add_many(('m0_center', guessparams[0]),
+                        ('m0_fwhm', guessparams[1]),
+                        ('m0_sigma', guessparams[2]),
+                        ('m0_height', guessparams[3]),
+                        ('m0_amplitude', guessparams[4]))
+        return params
 
 
 class lorentzian(LorentzianModel):
