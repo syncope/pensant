@@ -1,3 +1,9 @@
+pensant (0.1.0-1+deb9u5~fsec) stretch; urgency=low
+
+  * Minor changes plus addition of "peak finder" for single peaks (gauss only for now).
+
+ -- Christoph Rosemann <christoph.rosemann@desy.de>  Fri, 29 Mar 2019 10:33:00 +0100
+
 pensant (0.0.13-1+deb9u5~fsec) stretch; urgency=low
 
   * Fixed ranges to accomodate also very large statistics..
