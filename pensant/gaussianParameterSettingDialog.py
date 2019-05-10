@@ -40,6 +40,7 @@ class GaussianParameterSettingDialog(parameterSettingDialog.ParameterSettingDial
         self.guessStartValuesBtn.hide()
         self.configDonePushBtn.clicked.connect(self._guessingDone)
         self._checkMaxima()
+        print("data: \n" + str(xdata) + "\n" + str(ydata)) 
 
     def _checkMaxima(self):
         datamax = np.amax(self._ydata)
