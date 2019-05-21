@@ -154,8 +154,6 @@ class shiftedhyperbola(ExpressionModel):
         return self._widget
 
     def guess(self, data, **kw):
-        print(" i guess i have to guess ")
-        print(" based on : " + str(data))
         params = Parameters()
         params.add_many(('a', 1), ('xzero', 1))
         return params
