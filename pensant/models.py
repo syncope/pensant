@@ -147,12 +147,18 @@ class exponential(ExponentialModel):
 
 class shiftedhyperbola(ExpressionModel):
     def __init__(self, **kwargs):
-        super(shiftedhyperbola, self).__init__(expr='a/(x-xzero)', **kwargs)
-        self.prefix = "haha"
+        super(shiftedhyperbola, self).__init__('a/(x-xzero)', independent_vars=['x'], **kwargs)
 
     def getWidget(self, xdata=None, ydata=None, index=None):
         self._widget = modelWidgeteer("shiftedhyperbolaModel", self, "ui/shiftedhyperbolaModelFitParameters.ui", xdata, ydata, index)
         return self._widget
+
+    def guess(self, data, **kw):
+        print(" i guess i have to guess ")
+        print(" based on : " + str(data))
+        params = Parameters()
+        params.add_many(('a', 1), ('xzero', 1))
+        return params
 
 #~ class shiftedexponential(ExpressionModel):
     #~ def __init__(self, **kwargs):
