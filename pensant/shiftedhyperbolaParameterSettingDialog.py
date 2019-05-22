@@ -46,7 +46,7 @@ class shiftedhyperbolaParameterSettingDialog(parameterSettingDialog.ParameterSet
         self._xzeroDisplay = float(self._xdata[0])
         self._xzeroBounds = (0., 2*self._xzeroDisplay)
         self._aDisplay = 1.
-        self._aBounds = (0., float(np.amax(self._ydata)))
+        self._aBounds = (0., 2*float(np.amax(self._ydata)))
 
         # first fix the accuracy of the display
         # number of steps;
