@@ -1,4 +1,4 @@
-pnsant (0.1.2-1+deb9u5~fsec) stretch; urgency=low
+pensant (0.1.2-1+deb9u5~fsec) stretch; urgency=low
 
   * Introduce new fit function "shiftedhyperbola" with everything (ui, dialog,
     etc.).
