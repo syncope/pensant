@@ -22,6 +22,7 @@ from pensant.plmfit import Model
 from pensant.plmfit.models import PseudoVoigtModel, LorentzianModel, GaussianModel
 from pensant.plmfit.models import ConstantModel, LinearModel, QuadraticModel
 from pensant.plmfit.models import PolynomialModel, ExponentialModel
+from pensant.plmfit.models import ExpressionModel
 from pensant.plmfit.parameter import Parameters
 
 from PyQt4 import QtCore, QtGui, uic
@@ -34,6 +35,8 @@ from . import linearParameterSettingDialog
 from . import lorentzianParameterSettingDialog
 from . import parameterSettingDialog
 from . import quadraticParameterSettingDialog
+from . import shiftedhyperbolaParameterSettingDialog
+#~ from . import exponentialParameterSettingDialog
 
 from scipy.interpolate import UnivariateSpline
 
@@ -130,11 +133,49 @@ class constant(ConstantModel):
         return super(constant, self).guess(data, **kw)
 
 
+class exponential(ExponentialModel):
+    def __init__(self, **kwargs):
+        super(exponential, self).__init__(**kwargs)
+
+    def getWidget(self, xdata=None, ydata=None, index=None):
+        self._widget = modelWidgeteer("exponentialModel", self, "ui/exponentialModelFitParameters.ui", xdata, ydata, index)
+        return self._widget
+
+    def guess(self, data, **kw):
+        return super(exponential, self).guess(data, **kw)
+
+
+class shiftedhyperbola(ExpressionModel):
+    def __init__(self, **kwargs):
+        super(shiftedhyperbola, self).__init__('a/(x-xzero)', independent_vars=['x'], **kwargs)
+
+    def getWidget(self, xdata=None, ydata=None, index=None):
+        self._widget = modelWidgeteer("shiftedhyperbolaModel", self, "ui/shiftedhyperbolaModelFitParameters.ui", xdata, ydata, index)
+        return self._widget
+
+    def guess(self, data, **kw):
+        params = Parameters()
+        params.add_many(('a', 1), ('xzero', 1))
+        return params
+
+#~ class shiftedexponential(ExpressionModel):
+    #~ def __init__(self, **kwargs):
+        #~ super(shiftedexponential, self).__init__(**kwargs)
+        #~ self = ExpressionModel('amp*exp(-lambda*(x-x0))-offset')
+
+    #~ def getWidget(self, xdata=None, ydata=None, index=None):
+        #~ self._widget = modelWidgeteer("exponentialModel", self, "ui/exponentialModelFitParameters.ui", xdata, ydata, index)
+        #~ return self._widget
+
+
 FitModels = {"constantModel": constant,
              "linearModel": linear,
              "quadraticModel": quadratic,
              "gaussianModel": gaussian,
              "lorentzianModel": lorentzian,
+             "exponentialModel": exponential,
+             "shiftedhyperbolaModel": shiftedhyperbola,
+             #~ "shiftedexponentialModel": exponential,
              # "psvModel" : psv,
              }
 
@@ -153,5 +194,11 @@ def modelWidgeteer(model, fitModel, uiFilename, xdata, ydata, index):
         return linearParameterSettingDialog.LinearParameterSettingDialog(model, xdata, ydata, fitModel, index=index, uifile=formfile)
     elif model == "quadraticModel":
         return quadraticParameterSettingDialog.QuadraticParameterSettingDialog(model, xdata, ydata, fitModel, index=index, uifile=formfile)
+    elif model == "exponentialModel":
+        return exponentialParameterSettingDialog.exponentialParameterSettingDialog(model, xdata, ydata, fitModel, index=index, uifile=formfile)
+    #~ elif model == "shiftedexponentialModel":
+        #~ return shiftedexponentialParameterSettingDialog.shiftedexponentialParameterSettingDialog(model, xdata, ydata, fitModel, index=index, uifile=formfile)
+    elif model == "shiftedhyperbolaModel":
+        return shiftedhyperbolaParameterSettingDialog.shiftedhyperbolaParameterSettingDialog(model, xdata, ydata, fitModel, index=index, uifile=formfile)
     else:
         return parameterSettingDialog.ParameterSettingDialog(uifile=formfile)
