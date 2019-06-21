@@ -170,10 +170,10 @@ class shiftedhyperbola(ExpressionModel):
 
 FitModels = {"constantModel": constant,
              "linearModel": linear,
-             "quadraticModel": quadratic,
+             #~ "quadraticModel": quadratic,
              "gaussianModel": gaussian,
              "lorentzianModel": lorentzian,
-             "exponentialModel": exponential,
+             #~ "exponentialModel": exponential,
              "shiftedhyperbolaModel": shiftedhyperbola,
              #~ "shiftedexponentialModel": exponential,
              # "psvModel" : psv,

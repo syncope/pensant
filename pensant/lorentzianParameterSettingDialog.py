@@ -40,8 +40,8 @@ class LorentzianParameterSettingDialog(parameterSettingDialog.ParameterSettingDi
 
     def _checkMaxima(self):
         datamax = np.amax(self._ydata)
-        if self.maximumValue.maximum() <= datamax:
-            self.maximumValue.setMaximum(datamax*1000)
+        if self.amplitudeValue.maximum() <= datamax:
+            self.amplitudeValue.setMaximum(datamax*1000)
             self.maximumUBValue.setMaximum(datamax*1000)
 
     def _guessingDone(self, **kw):
