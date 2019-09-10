@@ -17,7 +17,6 @@
 # Boston, MA  02110-1301, USA.
 
 from . import models
-# from . import peakguesser.py
 from . import parameterSettingDialog
 from . import constantParameterSettingDialog
 from . import gaussianParameterSettingDialog
