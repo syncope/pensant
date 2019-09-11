@@ -16,15 +16,15 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor,
 # Boston, MA  02110-1301, USA.
 
-from . import parameterSettingDialog
+from . import parameterSettingWidget
 import numpy as np
 import math
 
 
-class GaussianParameterSettingDialog(parameterSettingDialog.ParameterSettingDialog):
+class GaussianParameterSettingWidget(parameterSettingWidget.ParameterSettingWidget):
 
     def __init__(self, modelname, xdata, ydata, model, **kw):
-        super(GaussianParameterSettingDialog, self).__init__(**kw)
+        super(GaussianParameterSettingWidget, self).__init__(**kw)
         self.passData(xdata, ydata)
         self.meanValue.valueChanged.connect(self._updateMean)
         self.meanSlider.valueChanged.connect(self._updateMean)
