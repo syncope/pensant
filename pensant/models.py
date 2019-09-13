@@ -29,13 +29,13 @@ from PyQt4 import QtCore, QtGui, uic
 import numpy as np
 import math
 
-from . import constantParameterSettingWidget
+#~ from . import constantParameterSettingWidget
 from . import gaussianParameterSettingWidget
-from . import linearParameterSettingWidget
-from . import lorentzianParameterSettingWidget
-from . import parameterSettingWidget
-from . import quadraticParameterSettingWidget
-from . import shiftedhyperbolaParameterSettingWidget
+#~ from . import linearParameterSettingWidget
+#~ from . import lorentzianParameterSettingWidget
+#~ from . import parameterSettingWidget
+#~ from . import quadraticParameterSettingWidget
+#~ from . import shiftedhyperbolaParameterSettingWidget
 #~ from . import exponentialParameterSettingWidget
 
 from scipy.interpolate import UnivariateSpline
@@ -62,7 +62,7 @@ class gaussian(GaussianModel):
         self._widget = None
 
     def getWidget(self, xdata=None, ydata=None, name=None):
-        self._widget = modelWidgeteer("gaussianModel", self, "ui/gaussModelFitParameters.ui", xdata, ydata, name)
+        self._widget = modelWidgeteer(model="gaussianModel", fitModel=self, uiFilename="ui/gaussModelFitParameters.ui", xdata=xdata, ydata=ydata, name=name)
         return self._widget
 
     def gaussguess(self, xdata, ydata):
@@ -168,16 +168,11 @@ class shiftedhyperbola(ExpressionModel):
         #~ return self._widget
 
 
-FitModels = {"constantModel": constant,
-             "linearModel": linear,
-             "quadraticModel": quadratic,
+FitModels = { #"constantModel": constant,
+             #~ "linearModel": linear,
+             #~ "quadraticModel": quadratic,
              "gaussianModel": gaussian,
-             "lorentzianModel": lorentzian,
-             "exponentialModel": exponential,
-             "shiftedhyperbolaModel": shiftedhyperbola,
-             #~ "shiftedexponentialModel": exponential,
-             # "psvModel" : psv,
-             }
+            }
 
 
 def modelWidgeteer(model, fitModel, uiFilename, xdata, ydata, name):
@@ -185,7 +180,7 @@ def modelWidgeteer(model, fitModel, uiFilename, xdata, ydata, name):
     dir_path = os.path.dirname(os.path.realpath(__file__)) + "/"
     formfile = os.path.join(dir_path, uiFilename)
     if model == "gaussianModel":
-        return gaussianParameterSettingWidget.GaussianParameterSettingWidget(model, xdata, ydata, fitModel, name=name, uifile=formfile)
+        return gaussianParameterSettingWidget.GaussianParameterSettingWidget(fitModel, xdata, ydata, name=name, uifile=formfile)
     #~ elif model == "lorentzianModel":
         #~ return lorentzianParameterSettingWidget.LorentzianParameterSettingWidget(model, xdata, ydata, fitModel, name=name, uifile=formfile)
     #~ elif model == "constantModel":
