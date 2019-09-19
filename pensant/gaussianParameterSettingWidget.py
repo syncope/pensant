@@ -35,8 +35,9 @@ class GaussianParameterSettingWidget(parameterSettingWidget.ParameterSettingWidg
         self.sigmaSlider.valueChanged.connect(self._updateSigma)
         self._model = model
         self._parameters = None
-        self.prefix = str("m" + str(self._name) + "_")
-        self._exo.setName(self.prefix)
+        self._modelprefix = str("m" + str(self._name) + "_")
+        self._exo.setName(self._modelprefix)
+        self._setColour(self._exo.colour())
         self._checkMaxima()
         self.useLBMean.hide()
         self.useUBMean.hide()
@@ -209,7 +210,7 @@ class GaussianParameterSettingWidget(parameterSettingWidget.ParameterSettingWidg
         if (self.useUBMaximum.isChecked()):
             amplitudedict['max'] = self._conversionFactorMaximumToAmplitude() * self.maximumUBValue.value()
 
-        pdict = {self._model.prefix:
+        pdict = {self._modelprefix:
                  {'modeltype': 'gaussianModel',
                   'center': centerdict,
                   'sigma': sigmadict,

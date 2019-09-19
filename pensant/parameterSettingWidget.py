@@ -78,7 +78,7 @@ class guiParameter():
 
 class fitExchangeObject():
 
-    def __init__(self, data=None, name=None, colour=None):
+    def __init__(self, data=None, name=None, colour=QtGui.QColor('black')):
         self._data = data
         self._name = name
         self._colour = colour
