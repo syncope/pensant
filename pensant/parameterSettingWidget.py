@@ -107,4 +107,4 @@ class fitExchangeObject():
         self._colour = colour
 
     def dump(self):
-        print("i am " + str(self._data) + " and " + str(self._colour))
+        print("[FitExchangeObject] name: " + str(self._name) + " and colour " + str(self._colour)+ "\ndata:  " + str(self._data))

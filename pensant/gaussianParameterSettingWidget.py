@@ -52,7 +52,6 @@ class GaussianParameterSettingWidget(parameterSettingWidget.ParameterSettingWidg
         self.sigmaLBValue.hide()
         self.sigmaUBValue.hide()
         self.extendButton.clicked.connect(self._togglehide)
-        self.chooseColourButton.clicked.connect(print)
         self.chooseColourButton.clicked.connect(self._chooseColour)
 
     def _togglehide(self):
@@ -231,9 +230,10 @@ class GaussianParameterSettingWidget(parameterSettingWidget.ParameterSettingWidg
     def _chooseColour(self):
         self._qcd = QtGui.QColorDialog()
         self._qcd.show()
-        self._qcd.colorSelected.connect(self._setColour)
+        #~ self._qcd.colorSelected.connect(self._setColour)
+        self._qcd.currentColorChanged.connect(self._setColour)
 
     def _setColour(self, colour):
         self.setColour(colour)
         self.chooseColourButton.setStyleSheet( ("background-color:"+str(colour.name())))
-
+        self.updateFit.emit()
