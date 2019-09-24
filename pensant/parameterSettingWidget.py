@@ -19,25 +19,33 @@
 from PyQt4 import QtCore, QtGui, uic
 
 
-class ParameterSettingDialog(QtGui.QDialog):
+class ParameterSettingWidget(QtGui.QWidget):
     updateFit = QtCore.pyqtSignal()
     guessingDone = QtCore.pyqtSignal()
 
-    def __init__(self, uifile, index='0', parent=None):
-        super(ParameterSettingDialog, self).__init__(parent)
+    def __init__(self, uifile, name='0', parent=None):
+        super(ParameterSettingWidget, self).__init__(parent)
         uic.loadUi(uifile, self)
-        self._index = index
+        self._name = name
+        self._exo = fitExchangeObject(name = name)
 
     def passData(self, xdata, ydata):
         self._xdata = xdata
         self._ydata = ydata
         self.update()
+        self._exo.setData(ydata)
 
     def update(self):
         pass
 
-    def getIndex(self):
-        return self._index
+    def getName(self):
+        return self._name
+
+    def colour(self):
+        return self._exo.colour()
+
+    def setColour(self, colour):
+        self._exo.setColour(colour)
 
 
 class guiParameter():
@@ -67,3 +75,36 @@ class guiParameter():
             self.currentValue = self.upperLimit
         elif self.currentValue < self.lowerLimit:
             self.currentValue = self.lowerLimit
+
+class fitExchangeObject():
+
+    def __init__(self, data=None, name=None, colour=QtGui.QColor('black')):
+        self._data = data
+        self._name = name
+        self._colour = colour
+
+    def data(self):
+        return self._data
+
+    def name(self):
+        return self._name
+
+    def colour(self):
+        return self._colour
+
+    def set(self, data, name, colour):
+        self._data = data
+        self._name = name
+        self._colour = colour
+
+    def setData(self, data):
+        self._data = data
+
+    def setName(self, name):
+        self._name = name
+
+    def setColour(self, colour):
+        self._colour = colour
+
+    def dump(self):
+        print("[FitExchangeObject] name: " + str(self._name) + " and colour " + str(self._colour)+ "\ndata:  " + str(self._data))
