@@ -29,7 +29,7 @@ from PyQt4 import QtCore, QtGui, uic
 import numpy as np
 import math
 
-#~ from . import constantParameterSettingWidget
+from . import constantParameterSettingWidget
 from . import gaussianParameterSettingWidget
 from . import linearParameterSettingWidget
 #~ from . import lorentzianParameterSettingWidget
@@ -126,7 +126,7 @@ class constant(ConstantModel):
         super(constant, self).__init__(**kwargs)
 
     def getWidget(self, xdata=None, ydata=None, name=None):
-        self._widget = modelWidgeteer("constantModel", self, "ui/constantModelFitParameters.ui", xdata, ydata, name)
+        self._widget = modelWidgeteer(model="constantModel", fitModel=self, uiFilename="ui/constantModelFitParameters.ui", xdata=xdata, ydata=ydata, name=name)
         return self._widget
 
     def guess(self, data, **kw):
@@ -168,8 +168,8 @@ class shiftedhyperbola(ExpressionModel):
         #~ return self._widget
 
 
-FitModels = { #"constantModel": constant,
-             "linearModel": linear,
+FitModels = { "constantModel": constant,
+              "linearModel": linear,
              #~ "quadraticModel": quadratic,
              "gaussianModel": gaussian,
             }
@@ -183,8 +183,8 @@ def modelWidgeteer(model, fitModel, uiFilename, xdata, ydata, name):
         return gaussianParameterSettingWidget.GaussianParameterSettingWidget(fitModel, xdata, ydata, name=name, uifile=formfile)
     #~ elif model == "lorentzianModel":
         #~ return lorentzianParameterSettingWidget.LorentzianParameterSettingWidget(model, xdata, ydata, fitModel, name=name, uifile=formfile)
-    #~ elif model == "constantModel":
-        #~ return constantParameterSettingWidget.ConstantParameterSettingWidget(model, xdata, ydata, fitModel, name=name, uifile=formfile)
+    elif model == "constantModel":
+        return constantParameterSettingWidget.ConstantParameterSettingWidget(fitModel, xdata, ydata, name=name, uifile=formfile)
     elif model == "linearModel":
         return linearParameterSettingWidget.LinearParameterSettingWidget(fitModel, xdata, ydata, name=name, uifile=formfile)
     #~ elif model == "quadraticModel":
