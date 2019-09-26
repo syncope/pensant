@@ -31,7 +31,7 @@ import math
 
 #~ from . import constantParameterSettingWidget
 from . import gaussianParameterSettingWidget
-#~ from . import linearParameterSettingWidget
+from . import linearParameterSettingWidget
 #~ from . import lorentzianParameterSettingWidget
 #~ from . import parameterSettingWidget
 #~ from . import quadraticParameterSettingWidget
@@ -102,7 +102,7 @@ class linear(LinearModel):
         super(linear, self).__init__(**kwargs)
 
     def getWidget(self, xdata=None, ydata=None, name=None):
-        self._widget = modelWidgeteer("linearModel", self, "ui/linearModelFitParameters.ui", xdata, ydata, name)
+        self._widget = modelWidgeteer(model="linearModel", fitModel=self, uiFilename="ui/linearModelFitParameters.ui", xdata=xdata, ydata=ydata, name=name)
         return self._widget
 
     def guess(self, data, **kw):
@@ -169,7 +169,7 @@ class shiftedhyperbola(ExpressionModel):
 
 
 FitModels = { #"constantModel": constant,
-             #~ "linearModel": linear,
+             "linearModel": linear,
              #~ "quadraticModel": quadratic,
              "gaussianModel": gaussian,
             }
@@ -185,8 +185,8 @@ def modelWidgeteer(model, fitModel, uiFilename, xdata, ydata, name):
         #~ return lorentzianParameterSettingWidget.LorentzianParameterSettingWidget(model, xdata, ydata, fitModel, name=name, uifile=formfile)
     #~ elif model == "constantModel":
         #~ return constantParameterSettingWidget.ConstantParameterSettingWidget(model, xdata, ydata, fitModel, name=name, uifile=formfile)
-    #~ elif model == "linearModel":
-        #~ return linearParameterSettingWidget.LinearParameterSettingWidget(model, xdata, ydata, fitModel, name=name, uifile=formfile)
+    elif model == "linearModel":
+        return linearParameterSettingWidget.LinearParameterSettingWidget(fitModel, xdata, ydata, name=name, uifile=formfile)
     #~ elif model == "quadraticModel":
         #~ return quadraticParameterSettingWidget.QuadraticParameterSettingWidget(model, xdata, ydata, fitModel, name=name, uifile=formfile)
     #~ elif model == "exponentialModel":

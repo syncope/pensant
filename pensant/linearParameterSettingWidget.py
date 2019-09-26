@@ -16,25 +16,52 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor,
 # Boston, MA  02110-1301, USA.
 
-from . import parameterSettingDialog
+from . import parameterSettingWidget
 import numpy as np
 import math
 
 
-class LinearParameterSettingDialog(parameterSettingDialog.ParameterSettingDialog):
+class LinearParameterSettingWidget(parameterSettingWidget.ParameterSettingWidget):
 
-    def __init__(self, modelname, xdata, ydata, model=None, **kw):
-        super(LinearParameterSettingDialog, self).__init__(**kw)
+    def __init__(self, model, xdata, ydata, **kw):
+        super(LinearParameterSettingWidget, self).__init__(**kw)
         self.passData(xdata, ydata)
         self.interceptSlider.valueChanged.connect(self._interceptScaler)
         self.slopeSlider.valueChanged.connect(self._slopeScaler)
-        self._modelName = modelname
+        self._modelprefix = str("m" + str(self._name) + "_")
         self._model = model
-        self._model.prefix = "m" + str(self._index) + "_"
-        self._parameters = None
-        self.guessStartValuesBtn.clicked.connect(print)
-        self.guessStartValuesBtn.hide()
-        self.configDonePushBtn.clicked.connect(self._guessingDone)
+        self._exo.setName(self._modelprefix)
+        self._setColour(self._exo.colour())
+        self.useLBSlope.hide()
+        self.useUBSlope.hide()
+        self.slopeLBValue.hide()
+        self.slopeUBValue.hide()
+        self.useLBIntercept.hide()
+        self.useUBIntercept.hide()
+        self.interceptLBValue.hide()
+        self.interceptUBValue.hide()
+
+    def _togglehide(self):
+        if self.useLBSlope.isHidden():
+            self.useLBSlope.show()
+            self.useUBSlope.show()
+            self.slopeLBValue.show()
+            self.slopeUBValue.show()
+            self.useLBIntercept.show()
+            self.useUBIntercept.show()
+            self.interceptLBValue.show()
+            self.interceptUBValue.show()
+            self.extendButton.setText("Shorten")
+        else:
+            self.useLBSlope.hide()
+            self.useUBSlope.hide()
+            self.slopeLBValue.hide()
+            self.slopeUBValue.hide()
+            self.useLBIntercept.hide()
+            self.useUBIntercept.hide()
+            self.interceptLBValue.hide()
+            self.interceptUBValue.hide()
+            self.extendButton.setText("Extend")
 
     def _guessingDone(self, **kw):
         self.guessingDone.emit()
@@ -89,13 +116,14 @@ class LinearParameterSettingDialog(parameterSettingDialog.ParameterSettingDialog
 
     def getCurrentFitData(self):
         self._parameters = self._model.make_params(intercept=self.interceptValue.value(), slope=self.slopeValue.value())
-        return self._model.eval(self._parameters, x=self._xdata)
+        self._exo.setData(self._model.eval(self._parameters, x=self._xdata))
+        return self._exo
 
     def automaticGuess(self):
         print("i'm guessing by the book")
 
     def getCurrentParameterDict(self):
-        pdict = {self._model.prefix:
+        pdict = {self._modelprefix:
                  {'modeltype': 'linearModel',
                   'intercept': {'value': self.interceptValue.value(), 'vary': (not self.interceptFixedCB.isChecked())},
                   'slope': {'value': self.slopeValue.value(), 'vary': (not self.slopeFixedCB.isChecked())},
@@ -108,3 +136,14 @@ class LinearParameterSettingDialog(parameterSettingDialog.ParameterSettingDialog
 
     def getModel(self):
         return self._model
+
+    def _chooseColour(self):
+        self._qcd = QtGui.QColorDialog()
+        self._qcd.show()
+        #~ self._qcd.colorSelected.connect(self._setColour)
+        self._qcd.currentColorChanged.connect(self._setColour)
+
+    def _setColour(self, colour):
+        self.setColour(colour)
+        self.chooseColourButton.setStyleSheet( ("background-color:"+str(colour.name())))
+        self.updateFit.emit()
