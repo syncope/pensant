@@ -32,11 +32,11 @@ import math
 from . import constantParameterSettingWidget
 from . import gaussianParameterSettingWidget
 from . import linearParameterSettingWidget
-#~ from . import lorentzianParameterSettingWidget
+from . import lorentzianParameterSettingWidget
 #~ from . import parameterSettingWidget
 from . import quadraticParameterSettingWidget
 #~ from . import shiftedhyperbolaParameterSettingWidget
-#~ from . import exponentialParameterSettingWidget
+from . import exponentialParameterSettingWidget
 
 from scipy.interpolate import UnivariateSpline
 
@@ -82,7 +82,7 @@ class lorentzian(LorentzianModel):
         super(lorentzian, self).__init__(**kwargs)
 
     def getWidget(self, xdata=None, ydata=None, name=None):
-        self._widget = modelWidgeteer("lorentzianModel", self, "ui/lorentzianModelFitParameters.ui", xdata, ydata, name)
+        self._widget = modelWidgeteer(model="lorentzianModel", fitModel=self, uiFilename="ui/lorentzianModelFitParameters.ui", xdata=xdata, ydata=ydata, name=name)
         return self._widget
 
     def guess(self, data, **kw):
@@ -114,7 +114,6 @@ class quadratic(QuadraticModel):
         super(quadratic, self).__init__(**kwargs)
 
     def getWidget(self, xdata=None, ydata=None, name=None):
-        self._widget = modelWidgeteer(model="linearModel", fitModel=self, uiFilename="ui/linearModelFitParameters.ui", xdata=xdata, ydata=ydata, name=name)
         self._widget = modelWidgeteer(model="quadraticModel", fitModel=self, uiFilename="ui/quadraticModelFitParameters.ui", xdata=xdata, ydata=ydata, name=name)
         return self._widget
 
@@ -139,7 +138,7 @@ class exponential(ExponentialModel):
         super(exponential, self).__init__(**kwargs)
 
     def getWidget(self, xdata=None, ydata=None, name=None):
-        self._widget = modelWidgeteer("exponentialModel", self, "ui/exponentialModelFitParameters.ui", xdata, ydata, name)
+        self._widget = modelWidgeteer(model="exponentialModel", fitModel=self, uiFilename="ui/exponentialModelFitParameters.ui", xdata=xdata, ydata=ydata, name=name)
         return self._widget
 
     def guess(self, data, **kw):
@@ -151,7 +150,7 @@ class shiftedhyperbola(ExpressionModel):
         super(shiftedhyperbola, self).__init__('a/(x-xzero)', independent_vars=['x'], **kwargs)
 
     def getWidget(self, xdata=None, ydata=None, name=None):
-        self._widget = modelWidgeteer("shiftedhyperbolaModel", self, "ui/shiftedhyperbolaModelFitParameters.ui", xdata, ydata, name)
+        self._widget = modelWidgeteer(model="shiftedhyperbolaModel", fitModel=self, uiFilename="ui/shiftedhyperbolaModelFitParameters.ui", xdata=xdata, ydata=ydata, name=name)
         return self._widget
 
     def guess(self, data, **kw):
@@ -171,8 +170,10 @@ class shiftedhyperbola(ExpressionModel):
 
 FitModels = { "constantModel": constant,
               "linearModel": linear,
-             "quadraticModel": quadratic,
-             "gaussianModel": gaussian,
+              "quadraticModel": quadratic,
+              "gaussianModel": gaussian,
+              "lorentzianModel": lorentzian,
+              "exponentialModel": exponential,
             }
 
 
@@ -182,16 +183,16 @@ def modelWidgeteer(model, fitModel, uiFilename, xdata, ydata, name):
     formfile = os.path.join(dir_path, uiFilename)
     if model == "gaussianModel":
         return gaussianParameterSettingWidget.GaussianParameterSettingWidget(fitModel, xdata, ydata, name=name, uifile=formfile)
-    #~ elif model == "lorentzianModel":
-        #~ return lorentzianParameterSettingWidget.LorentzianParameterSettingWidget(model, xdata, ydata, fitModel, name=name, uifile=formfile)
+    elif model == "lorentzianModel":
+        return lorentzianParameterSettingWidget.LorentzianParameterSettingWidget(fitModel, xdata, ydata, name=name, uifile=formfile)
     elif model == "constantModel":
         return constantParameterSettingWidget.ConstantParameterSettingWidget(fitModel, xdata, ydata, name=name, uifile=formfile)
     elif model == "linearModel":
         return linearParameterSettingWidget.LinearParameterSettingWidget(fitModel, xdata, ydata, name=name, uifile=formfile)
     elif model == "quadraticModel":
-        return quadraticParameterSettingWidget.QuadraticParameterSettingWidget(model, xdata, ydata, fitModel, name=name, uifile=formfile)
-    #~ elif model == "exponentialModel":
-        #~ return exponentialParameterSettingWidget.exponentialParameterSettingWidget(model, xdata, ydata, fitModel, name=name, uifile=formfile)
+        return quadraticParameterSettingWidget.QuadraticParameterSettingWidget(fitModel, xdata, ydata, name=name, uifile=formfile)
+    elif model == "exponentialModel":
+        return exponentialParameterSettingWidget.exponentialParameterSettingWidget(fitModel, xdata, ydata, name=name, uifile=formfile)
     #~ elif model == "shiftedexponentialModel":
         #~ return shiftedexponentialParameterSettingWidget.shiftedexponentialParameterSettingWidget(model, xdata, ydata, fitModel, name=name, uifile=formfile)
     #~ elif model == "shiftedhyperbolaModel":

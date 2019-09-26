@@ -16,25 +16,53 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor,
 # Boston, MA  02110-1301, USA.
 
-from . import parameterSettingDialog
+from . import parameterSettingWidget
 import numpy as np
 import math
 
 
-class exponentialParameterSettingDialog(parameterSettingDialog.ParameterSettingDialog):
+class exponentialParameterSettingWidget(parameterSettingWidget.ParameterSettingWidget):
 
-    def __init__(self, modelname, xdata, ydata, model=None, **kw):
-        super(exponentialParameterSettingDialog, self).__init__(**kw)
+    def __init__(self, model, xdata, ydata, **kw):
+        super(exponentialParameterSettingWidget, self).__init__(**kw)
         self.passData(xdata, ydata)
         self.aSlider.valueChanged.connect(self._aScaler)
         self.tauSlider.valueChanged.connect(self._tauScaler)
-        self._modelName = modelname
+        self._modelprefix = str("m" + str(self._name) + "_")
         self._model = model
-        self._model.prefix = "m" + str(self._index) + "_"
+        self._exo.setName(self._modelprefix)
+        self._setColour(self._exo.colour())
         self._parameters = None
-        self.guessStartValuesBtn.clicked.connect(print)
-        self.guessStartValuesBtn.hide()
-        self.configDonePushBtn.clicked.connect(self._guessingDone)
+        self.useLBA.hide()
+        self.useUBA.hide()
+        self.aLBValue.hide()
+        self.aUBValue.hide()
+        self.useLBTau.hide()
+        self.useUBTau.hide()
+        self.tauLBValue.hide()
+        self.tauUBValue.hide()
+
+    def _togglehide(self):
+        if self.useLBA.isHidden():
+            self.useLBA.show()
+            self.useUBA.show()
+            self.aLBValue.show()
+            self.aUBValue.show()
+            self.useLBTau.show()
+            self.useUBTau.show()
+            self.tauLBValue.show()
+            self.tauUBValue.show()
+            self.extendButton.setText("Shorten")
+        else:
+            self.useLBA.hide()
+            self.useUBA.hide()
+            self.aLBValue.hide()
+            self.aUBValue.hide()
+            self.useLBTau.hide()
+            self.useUBTau.hide()
+            self.tauLBValue.hide()
+            self.tauUBValue.hide()
+            self.extendButton.setText("Extend")
 
     def _guessingDone(self, **kw):
         self.guessingDone.emit()
@@ -89,13 +117,14 @@ class exponentialParameterSettingDialog(parameterSettingDialog.ParameterSettingD
 
     def getCurrentFitData(self):
         self._parameters = self._model.make_params(a=self.aValue.value(), tau=self.tauValue.value())
-        return self._model.eval(self._parameters, x=self._xdata)
+        self._exo.setData(self._model.eval(self._parameters, x=self._xdata))
+        return self._exo
 
     def automaticGuess(self):
         print("i'm guessing by the book")
 
     def getCurrentParameterDict(self):
-        pdict = {self._model.prefix:
+        pdict = {self._modelprefix:
                  {'modeltype': 'exponentialModel',
                   'a': {'value': self.aValue.value(), 'vary': (not self.aFixedCB.isChecked())},
                   'tau': {'value': self.tauValue.value(), 'vary': (not self.tauFixedCB.isChecked())},
@@ -108,3 +137,14 @@ class exponentialParameterSettingDialog(parameterSettingDialog.ParameterSettingD
 
     def getModel(self):
         return self._model
+
+    def _chooseColour(self):
+        self._qcd = QtGui.QColorDialog()
+        self._qcd.show()
+        #~ self._qcd.colorSelected.connect(self._setColour)
+        self._qcd.currentColorChanged.connect(self._setColour)
+
+    def _setColour(self, colour):
+        self.setColour(colour)
+        self.chooseColourButton.setStyleSheet( ("background-color:"+str(colour.name())))
+        self.updateFit.emit()

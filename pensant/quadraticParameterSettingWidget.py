@@ -23,7 +23,7 @@ import math
 
 class QuadraticParameterSettingWidget(parameterSettingWidget.ParameterSettingWidget):
 
-    def __init__(self, modelname, xdata, ydata, model=None, **kw):
+    def __init__(self, model, xdata, ydata, **kw):
         super(QuadraticParameterSettingWidget, self).__init__(**kw)
         self.passData(xdata, ydata)
         self.aSlider.valueChanged.connect(self._aScaler)
@@ -154,7 +154,7 @@ class QuadraticParameterSettingWidget(parameterSettingWidget.ParameterSettingWid
         print("i'm guessing by the book")
 
     def getCurrentParameterDict(self):
-        pdict = {self._model.prefix:
+        pdict = {self._modelprefix:
                  {'modeltype': 'quadraticModel',
                   'a': {'value': self.aValue.value(), 'vary': (not self.aFixedCB.isChecked())},
                   'b': {'value': self.bValue.value(), 'vary': (not self.bFixedCB.isChecked())},
