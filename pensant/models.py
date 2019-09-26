@@ -34,7 +34,7 @@ from . import gaussianParameterSettingWidget
 from . import linearParameterSettingWidget
 #~ from . import lorentzianParameterSettingWidget
 #~ from . import parameterSettingWidget
-#~ from . import quadraticParameterSettingWidget
+from . import quadraticParameterSettingWidget
 #~ from . import shiftedhyperbolaParameterSettingWidget
 #~ from . import exponentialParameterSettingWidget
 
@@ -114,7 +114,8 @@ class quadratic(QuadraticModel):
         super(quadratic, self).__init__(**kwargs)
 
     def getWidget(self, xdata=None, ydata=None, name=None):
-        self._widget = modelWidgeteer("quadraticModel", self, "ui/quadraticModelFitParameters.ui", xdata, ydata, name)
+        self._widget = modelWidgeteer(model="linearModel", fitModel=self, uiFilename="ui/linearModelFitParameters.ui", xdata=xdata, ydata=ydata, name=name)
+        self._widget = modelWidgeteer(model="quadraticModel", fitModel=self, uiFilename="ui/quadraticModelFitParameters.ui", xdata=xdata, ydata=ydata, name=name)
         return self._widget
 
     def guess(self, data, **kw):
@@ -170,7 +171,7 @@ class shiftedhyperbola(ExpressionModel):
 
 FitModels = { "constantModel": constant,
               "linearModel": linear,
-             #~ "quadraticModel": quadratic,
+             "quadraticModel": quadratic,
              "gaussianModel": gaussian,
             }
 
@@ -187,8 +188,8 @@ def modelWidgeteer(model, fitModel, uiFilename, xdata, ydata, name):
         return constantParameterSettingWidget.ConstantParameterSettingWidget(fitModel, xdata, ydata, name=name, uifile=formfile)
     elif model == "linearModel":
         return linearParameterSettingWidget.LinearParameterSettingWidget(fitModel, xdata, ydata, name=name, uifile=formfile)
-    #~ elif model == "quadraticModel":
-        #~ return quadraticParameterSettingWidget.QuadraticParameterSettingWidget(model, xdata, ydata, fitModel, name=name, uifile=formfile)
+    elif model == "quadraticModel":
+        return quadraticParameterSettingWidget.QuadraticParameterSettingWidget(model, xdata, ydata, fitModel, name=name, uifile=formfile)
     #~ elif model == "exponentialModel":
         #~ return exponentialParameterSettingWidget.exponentialParameterSettingWidget(model, xdata, ydata, fitModel, name=name, uifile=formfile)
     #~ elif model == "shiftedexponentialModel":
