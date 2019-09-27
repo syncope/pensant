@@ -17,6 +17,7 @@
 # Boston, MA  02110-1301, USA.
 
 from . import parameterSettingWidget
+from PyQt4 import QtGui
 import numpy as np
 import math
 
@@ -45,6 +46,8 @@ class QuadraticParameterSettingWidget(parameterSettingWidget.ParameterSettingWid
         self.useUBC.hide()
         self.cLBValue.hide()
         self.cUBValue.hide()
+        self.extendButton.clicked.connect(self._togglehide)
+        self.chooseColourButton.clicked.connect(self._chooseColour)
 
     def _togglehide(self):
         if self.useLBA.isHidden():
@@ -177,5 +180,5 @@ class QuadraticParameterSettingWidget(parameterSettingWidget.ParameterSettingWid
 
     def _setColour(self, colour):
         self.setColour(colour)
-        self.chooseColourButton.setStyleSheet( ("background-color:"+str(colour.name())))
+        self.colourDisplay.setStyleSheet( ("background-color:"+str(colour.name())))
         self.updateFit.emit()

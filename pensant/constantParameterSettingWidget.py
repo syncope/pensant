@@ -1,4 +1,4 @@
-# Copyright (C) 2018  Christoph Rosemann, DESY, Notkestr. 85, D-22607 Hamburg
+# Copyright (C) 2018-9  Christoph Rosemann, DESY, Notkestr. 85, D-22607 Hamburg
 # email contact: christoph.rosemann@desy.de
 #
 # This program is free software; you can redistribute it and/or
@@ -17,6 +17,7 @@
 # Boston, MA  02110-1301, USA.
 
 from . import parameterSettingWidget
+from PyQt4 import QtGui
 import numpy as np
 import math
 
@@ -36,6 +37,8 @@ class ConstantParameterSettingWidget(parameterSettingWidget.ParameterSettingWidg
         self.useUBConst.hide()
         self.constLBValue.hide()
         self.constUBValue.hide()
+        self.extendButton.clicked.connect(self._togglehide)
+        self.chooseColourButton.clicked.connect(self._chooseColour)
 
     def _togglehide(self):
         if self.useLBConst.isHidden():
@@ -113,5 +116,5 @@ class ConstantParameterSettingWidget(parameterSettingWidget.ParameterSettingWidg
 
     def _setColour(self, colour):
         self.setColour(colour)
-        self.chooseColourButton.setStyleSheet( ("background-color:"+str(colour.name())))
+        self.colourDisplay.setStyleSheet( ("background-color:"+str(colour.name())))
         self.updateFit.emit()

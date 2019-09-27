@@ -17,6 +17,7 @@
 # Boston, MA  02110-1301, USA.
 
 from . import parameterSettingWidget
+from PyQt4 import QtGui
 import numpy as np
 import math
 
@@ -41,6 +42,8 @@ class exponentialParameterSettingWidget(parameterSettingWidget.ParameterSettingW
         self.useUBTau.hide()
         self.tauLBValue.hide()
         self.tauUBValue.hide()
+        self.extendButton.clicked.connect(self._togglehide)
+        self.chooseColourButton.clicked.connect(self._chooseColour)
 
     def _togglehide(self):
         if self.useLBA.isHidden():
@@ -146,5 +149,5 @@ class exponentialParameterSettingWidget(parameterSettingWidget.ParameterSettingW
 
     def _setColour(self, colour):
         self.setColour(colour)
-        self.chooseColourButton.setStyleSheet( ("background-color:"+str(colour.name())))
+        self.colourDisplay.setStyleSheet( ("background-color:"+str(colour.name())))
         self.updateFit.emit()

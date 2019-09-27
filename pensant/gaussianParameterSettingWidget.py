@@ -235,5 +235,5 @@ class GaussianParameterSettingWidget(parameterSettingWidget.ParameterSettingWidg
 
     def _setColour(self, colour):
         self.setColour(colour)
-        self.chooseColourButton.setStyleSheet( ("background-color:"+str(colour.name())))
+        self.colourDisplay.setStyleSheet( ("background-color:"+str(colour.name())))
         self.updateFit.emit()

@@ -17,6 +17,7 @@
 # Boston, MA  02110-1301, USA.
 
 from . import parameterSettingDialog
+from PyQt4 import QtGui
 import numpy as np
 import math
 
@@ -39,6 +40,8 @@ class shiftedexponentialParameterSettingDialog(parameterSettingDialog.ParameterS
         self.guessStartValuesBtn.clicked.connect(print)
         self.guessStartValuesBtn.hide()
         self.configDonePushBtn.clicked.connect(self._guessingDone)
+        self.extendButton.clicked.connect(self._togglehide)
+        self.chooseColourButton.clicked.connect(self._chooseColour)
 
     def _guessingDone(self, **kw):
         self.guessingDone.emit()

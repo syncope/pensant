@@ -1,4 +1,4 @@
-# Copyright (C) 2018  Christoph Rosemann, DESY, Notkestr. 85, D-22607 Hamburg
+# Copyright (C) 2018-9  Christoph Rosemann, DESY, Notkestr. 85, D-22607 Hamburg
 # email contact: christoph.rosemann@desy.de
 #
 # This program is free software; you can redistribute it and/or
@@ -17,6 +17,7 @@
 # Boston, MA  02110-1301, USA.
 
 from . import parameterSettingWidget
+from PyQt4 import QtGui
 import numpy as np
 import math
 
@@ -40,6 +41,8 @@ class LinearParameterSettingWidget(parameterSettingWidget.ParameterSettingWidget
         self.useUBIntercept.hide()
         self.interceptLBValue.hide()
         self.interceptUBValue.hide()
+        self.extendButton.clicked.connect(self._togglehide)
+        self.chooseColourButton.clicked.connect(self._chooseColour)
 
     def _togglehide(self):
         if self.useLBSlope.isHidden():
@@ -70,7 +73,7 @@ class LinearParameterSettingWidget(parameterSettingWidget.ParameterSettingWidget
     def update(self):
         # first basic calculations
         self._slopeDisplay = float(np.mean(self._ydata))/float(np.mean(self._xdata))
-        self._slopeBounds = (10*self._slopeDisplay, -10*self._slopeDisplay)
+        self._slopeBounds = (-10*self._slopeDisplay, 10*self._slopeDisplay)
         self._interceptDisplay = 0.
         self._interceptBounds = (-1*float(np.amax(self._ydata)), float(np.amax(self._ydata)))
 
@@ -145,5 +148,5 @@ class LinearParameterSettingWidget(parameterSettingWidget.ParameterSettingWidget
 
     def _setColour(self, colour):
         self.setColour(colour)
-        self.chooseColourButton.setStyleSheet( ("background-color:"+str(colour.name())))
+        self.colourDisplay.setStyleSheet( ("background-color:"+str(colour.name())))
         self.updateFit.emit()

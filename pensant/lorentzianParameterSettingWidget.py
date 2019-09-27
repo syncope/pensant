@@ -17,6 +17,7 @@
 # Boston, MA  02110-1301, USA.
 
 from . import parameterSettingWidget
+from PyQt4 import QtGui
 import numpy as np
 import math
 
@@ -46,6 +47,8 @@ class LorentzianParameterSettingWidget(parameterSettingWidget.ParameterSettingWi
         self.useUBSigma.hide()
         self.sigmaLBValue.hide()
         self.sigmaUBValue.hide()
+        self.extendButton.clicked.connect(self._togglehide)
+        self.chooseColourButton.clicked.connect(self._chooseColour)
 
     def _togglehide(self):
         if self.useLBCenter.isHidden():
@@ -184,5 +187,5 @@ class LorentzianParameterSettingWidget(parameterSettingWidget.ParameterSettingWi
 
     def _setColour(self, colour):
         self.setColour(colour)
-        self.chooseColourButton.setStyleSheet( ("background-color:"+str(colour.name())))
+        self.colourDisplay.setStyleSheet( ("background-color:"+str(colour.name())))
         self.updateFit.emit()
