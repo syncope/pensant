@@ -1,4 +1,4 @@
-# Copyright (C) 2018  Christoph Rosemann, DESY, Notkestr. 85, D-22607 Hamburg
+# Copyright (C) 2018-9  Christoph Rosemann, DESY, Notkestr. 85, D-22607 Hamburg
 # email contact: christoph.rosemann@desy.de
 #
 # This program is free software; you can redistribute it and/or
@@ -23,6 +23,7 @@ from pensant.plmfit.models import PseudoVoigtModel, LorentzianModel, GaussianMod
 from pensant.plmfit.models import ConstantModel, LinearModel, QuadraticModel
 from pensant.plmfit.models import PolynomialModel, ExponentialModel
 from pensant.plmfit.models import ExpressionModel
+from pensant.plmfit.model import CompositeModel
 from pensant.plmfit.parameter import Parameters
 
 from PyQt4 import QtCore, QtGui, uic
@@ -35,7 +36,7 @@ from . import linearParameterSettingWidget
 from . import lorentzianParameterSettingWidget
 #~ from . import parameterSettingWidget
 from . import quadraticParameterSettingWidget
-#~ from . import shiftedhyperbolaParameterSettingWidget
+from . import shiftedhyperbolaParameterSettingWidget
 from . import exponentialParameterSettingWidget
 
 from scipy.interpolate import UnivariateSpline
@@ -174,6 +175,7 @@ FitModels = { "constantModel": constant,
               "gaussianModel": gaussian,
               "lorentzianModel": lorentzian,
               "exponentialModel": exponential,
+              "shiftedhyperbolaModel" : shiftedhyperbola,
             }
 
 
@@ -195,7 +197,7 @@ def modelWidgeteer(model, fitModel, uiFilename, xdata, ydata, name):
         return exponentialParameterSettingWidget.exponentialParameterSettingWidget(fitModel, xdata, ydata, name=name, uifile=formfile)
     #~ elif model == "shiftedexponentialModel":
         #~ return shiftedexponentialParameterSettingWidget.shiftedexponentialParameterSettingWidget(model, xdata, ydata, fitModel, name=name, uifile=formfile)
-    #~ elif model == "shiftedhyperbolaModel":
-        #~ return shiftedhyperbolaParameterSettingWidget.shiftedhyperbolaParameterSettingWidget(model, xdata, ydata, fitModel, name=name, uifile=formfile)
+    elif model == "shiftedhyperbolaModel":
+        return shiftedhyperbolaParameterSettingWidget.shiftedhyperbolaParameterSettingWidget(fitModel, xdata, ydata, name=name, uifile=formfile)
     else:
         return parameterSettingWidget.ParameterSettingWidget(uifile=formfile)
