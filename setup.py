@@ -8,7 +8,7 @@ with open(path.join('.', 'README.rst'), encoding='utf-8') as f:
 
 name='pensant'
 version='0'
-release='0.2.x'
+release='0.3.0'
 
 setup(
     name=name,

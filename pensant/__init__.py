@@ -17,11 +17,5 @@
 # Boston, MA  02110-1301, USA.
 
 from . import models
-from . import parameterSettingWidget
-#~ from . import constantParameterSettingWidget
-from . import gaussianParameterSettingWidget
-#~ from . import linearParameterSettingWidget
-#~ from . import lorentzianParameterSettingWidget
-#~ from . import quadraticParameterSettingWidget
 
-__version__ = "0.2.x"
+__version__ = "0.3.0"
