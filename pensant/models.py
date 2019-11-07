@@ -20,8 +20,8 @@
 
 from pensant.plmfit.models import PseudoVoigtModel, LorentzianModel, GaussianModel
 from pensant.plmfit.models import ConstantModel, LinearModel, QuadraticModel
-from pensant.plmfit.models import ExponentialModel
-from pensant.plmfit.models import ExpressionModel
+from pensant.plmfit.models import ExponentialModel, ExpressionModel
+from pensant.plmfit.model import CompositeModel
 from pensant.plmfit.parameter import Parameters
 
 import numpy as np
