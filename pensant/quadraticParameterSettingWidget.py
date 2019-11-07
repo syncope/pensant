@@ -175,10 +175,9 @@ class QuadraticParameterSettingWidget(parameterSettingWidget.ParameterSettingWid
     def _chooseColour(self):
         self._qcd = QtGui.QColorDialog()
         self._qcd.show()
-        #~ self._qcd.colorSelected.connect(self._setColour)
         self._qcd.currentColorChanged.connect(self._setColour)
 
     def _setColour(self, colour):
         self.setColour(colour)
-        self.colourDisplay.setStyleSheet( ("background-color:"+str(colour.name())))
+        self.colourDisplay.setStyleSheet(("background-color:"+str(colour.name())))
         self.updateFit.emit()

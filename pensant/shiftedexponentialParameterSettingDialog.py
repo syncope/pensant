@@ -17,7 +17,6 @@
 # Boston, MA  02110-1301, USA.
 
 from . import parameterSettingDialog
-from PyQt4 import QtGui
 import numpy as np
 import math
 

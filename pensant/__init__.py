@@ -16,6 +16,4 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor,
 # Boston, MA  02110-1301, USA.
 
-from . import models
-
 __version__ = "0.3.0"

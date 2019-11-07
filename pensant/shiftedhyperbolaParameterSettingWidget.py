@@ -19,7 +19,6 @@
 from . import parameterSettingWidget
 from PyQt4 import QtGui
 import numpy as np
-import math
 
 
 class shiftedhyperbolaParameterSettingWidget(parameterSettingWidget.ParameterSettingWidget):
@@ -27,7 +26,7 @@ class shiftedhyperbolaParameterSettingWidget(parameterSettingWidget.ParameterSet
     def __init__(self, model, xdata, ydata, **kw):
         super(shiftedhyperbolaParameterSettingWidget, self).__init__(**kw)
         self.passData(xdata, ydata)
-        
+
         self.aSlider.valueChanged.connect(self._aScaler)
         self.xzeroSlider.valueChanged.connect(self._xzeroScaler)
         self._modelprefix = str("m" + str(self._name) + "_")
@@ -78,20 +77,6 @@ class shiftedhyperbolaParameterSettingWidget(parameterSettingWidget.ParameterSet
         self._xzeroBounds = (0., 2*self._xzeroDisplay)
         self._aDisplay = 1.
         self._aBounds = (0., 2*float(np.amax(self._ydata)))
-
-        # first fix the accuracy of the display
-        # number of steps;
-        #~ xzeroStep =(self._xzeroBounds[1] - self._xzeroBounds[0])/(self.xzeroSlider.maximum()-self.xzeroSlider.minimum())
-        #~ xzeroAcc = math.floor(math.fabs(math.log10(xzeroStep)))+2
-        #~ self.xzeroValue.setDecimals(xzeroAcc)
-        #~ self.xzeroLBValue.setDecimals(xzeroAcc)
-        #~ self.xzeroUBValue.setDecimals(xzeroAcc)
-#~
-        #~ aStep =(self._aBounds[1] - self._aBounds[0])/(self.aSlider.maximum()-self.aSlider.minimum())
-        #~ aAcc = math.floor(math.fabs(math.log10(aStep)))+2
-        #~ self.aValue.setDecimals(aAcc)
-        #~ self.aLBValue.setDecimals(aAcc)
-        #~ self.aUBValue.setDecimals(aAcc)
 
         # now set initial values
         self.xzeroValue.setValue(self._xzeroDisplay)
@@ -145,10 +130,9 @@ class shiftedhyperbolaParameterSettingWidget(parameterSettingWidget.ParameterSet
     def _chooseColour(self):
         self._qcd = QtGui.QColorDialog()
         self._qcd.show()
-        #~ self._qcd.colorSelected.connect(self._setColour)
         self._qcd.currentColorChanged.connect(self._setColour)
 
     def _setColour(self, colour):
         self.setColour(colour)
-        self.colourDisplay.setStyleSheet( ("background-color:"+str(colour.name())))
+        self.colourDisplay.setStyleSheet(("background-color:"+str(colour.name())))
         self.updateFit.emit()

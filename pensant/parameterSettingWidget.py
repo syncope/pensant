@@ -27,7 +27,7 @@ class ParameterSettingWidget(QtGui.QWidget):
         super(ParameterSettingWidget, self).__init__(parent)
         uic.loadUi(uifile, self)
         self._name = name
-        self._exo = fitExchangeObject(name = name)
+        self._exo = fitExchangeObject(name=name)
 
     def passData(self, xdata, ydata):
         self._xdata = xdata
@@ -76,6 +76,7 @@ class guiParameter():
         elif self.currentValue < self.lowerLimit:
             self.currentValue = self.lowerLimit
 
+
 class fitExchangeObject():
 
     def __init__(self, data=None, name=None, colour=QtGui.QColor('black')):
@@ -107,4 +108,4 @@ class fitExchangeObject():
         self._colour = colour
 
     def dump(self):
-        print("[FitExchangeObject] name: " + str(self._name) + " and colour " + str(self._colour)+ "\ndata:  " + str(self._data))
+        print("[FitExchangeObject] name: " + str(self._name) + " and colour " + str(self._colour) + "\ndata:  " + str(self._data))

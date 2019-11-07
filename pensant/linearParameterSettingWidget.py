@@ -19,7 +19,6 @@
 from . import parameterSettingWidget
 from PyQt4 import QtGui
 import numpy as np
-import math
 
 
 class LinearParameterSettingWidget(parameterSettingWidget.ParameterSettingWidget):
@@ -77,20 +76,6 @@ class LinearParameterSettingWidget(parameterSettingWidget.ParameterSettingWidget
         self._interceptDisplay = 0.
         self._interceptBounds = (-1*float(np.amax(self._ydata)), float(np.amax(self._ydata)))
 
-        # first fix the accuracy of the display
-        # number of steps;
-        #~ slopeStep =(self._slopeBounds[1] - self._slopeBounds[0])/(self.slopeSlider.maximum()-self.slopeSlider.minimum())
-        #~ slopeAcc = math.floor(math.fabs(math.log10(slopeStep)))+2
-        #~ self.slopeValue.setDecimals(slopeAcc)
-        #~ self.slopeLBValue.setDecimals(slopeAcc)
-        #~ self.slopeUBValue.setDecimals(slopeAcc)
-#~
-        #~ interceptStep =(self._interceptBounds[1] - self._interceptBounds[0])/(self.interceptSlider.maximum()-self.interceptSlider.minimum())
-        #~ interceptAcc = math.floor(math.fabs(math.log10(interceptStep)))+2
-        #~ self.interceptValue.setDecimals(interceptAcc)
-        #~ self.interceptLBValue.setDecimals(interceptAcc)
-        #~ self.interceptUBValue.setDecimals(interceptAcc)
-
         # now set initial values
         self.slopeValue.setValue(self._slopeDisplay)
         self.interceptValue.setValue(self._interceptDisplay)
@@ -143,10 +128,9 @@ class LinearParameterSettingWidget(parameterSettingWidget.ParameterSettingWidget
     def _chooseColour(self):
         self._qcd = QtGui.QColorDialog()
         self._qcd.show()
-        #~ self._qcd.colorSelected.connect(self._setColour)
         self._qcd.currentColorChanged.connect(self._setColour)
 
     def _setColour(self, colour):
         self.setColour(colour)
-        self.colourDisplay.setStyleSheet( ("background-color:"+str(colour.name())))
+        self.colourDisplay.setStyleSheet(("background-color:"+str(colour.name())))
         self.updateFit.emit()
