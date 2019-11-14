@@ -1,4 +1,4 @@
-# Copyright (C) 2018  Christoph Rosemann, DESY, Notkestr. 85, D-22607 Hamburg
+# Copyright (C) 2018-9  Christoph Rosemann, DESY, Notkestr. 85, D-22607 Hamburg
 # email contact: christoph.rosemann@desy.de
 #
 # This program is free software; you can redistribute it and/or
@@ -16,26 +16,68 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor,
 # Boston, MA  02110-1301, USA.
 
-from . import parameterSettingDialog
+from . import parameterSettingWidget
+from PyQt4 import QtGui
 import numpy as np
 import math
 
 
-class QuadraticParameterSettingDialog(parameterSettingDialog.ParameterSettingDialog):
+class QuadraticParameterSettingWidget(parameterSettingWidget.ParameterSettingWidget):
 
-    def __init__(self, modelname, xdata, ydata, model=None, **kw):
-        super(QuadraticParameterSettingDialog, self).__init__(**kw)
+    def __init__(self, model, xdata, ydata, **kw):
+        super(QuadraticParameterSettingWidget, self).__init__(**kw)
         self.passData(xdata, ydata)
         self.aSlider.valueChanged.connect(self._aScaler)
         self.bSlider.valueChanged.connect(self._bScaler)
         self.cSlider.valueChanged.connect(self._cScaler)
-        self._modelName = modelname
+        self._modelprefix = str("m" + str(self._name) + "_")
         self._model = model
-        self._model.prefix = "m" + str(self._index) + "_"
-        self._parameters = None
-        self.guessStartValuesBtn.clicked.connect(print)
-        self.guessStartValuesBtn.hide()
-        self.configDonePushBtn.clicked.connect(self._guessingDone)
+        self._exo.setName(self._modelprefix)
+        self._setColour(self._exo.colour())
+        self.useLBA.hide()
+        self.useUBA.hide()
+        self.aLBValue.hide()
+        self.aUBValue.hide()
+        self.useLBB.hide()
+        self.useUBB.hide()
+        self.bLBValue.hide()
+        self.bUBValue.hide()
+        self.useLBC.hide()
+        self.useUBC.hide()
+        self.cLBValue.hide()
+        self.cUBValue.hide()
+        self.extendButton.clicked.connect(self._togglehide)
+        self.chooseColourButton.clicked.connect(self._chooseColour)
+
+    def _togglehide(self):
+        if self.useLBA.isHidden():
+            self.useLBA.show()
+            self.useUBA.show()
+            self.aLBValue.show()
+            self.aUBValue.show()
+            self.useLBB.show()
+            self.useUBB.show()
+            self.bLBValue.show()
+            self.bUBValue.show()
+            self.useLBC.show()
+            self.useUBC.show()
+            self.cLBValue.show()
+            self.cUBValue.show()
+            self.extendButton.setText("Shorten")
+        else:
+            self.useLBA.hide()
+            self.useUBA.hide()
+            self.aLBValue.hide()
+            self.aUBValue.hide()
+            self.useLBB.hide()
+            self.useUBB.hide()
+            self.bLBValue.hide()
+            self.bUBValue.hide()
+            self.useLBC.hide()
+            self.useUBC.hide()
+            self.cLBValue.hide()
+            self.cUBValue.hide()
+            self.extendButton.setText("Extend")
 
     def _guessingDone(self, **kw):
         self.guessingDone.emit()
@@ -108,13 +150,14 @@ class QuadraticParameterSettingDialog(parameterSettingDialog.ParameterSettingDia
 
     def getCurrentFitData(self):
         self._parameters = self._model.make_params(a=self.aValue.value(), b=self.bValue.value(), c=self.cValue.value())
-        return self._model.eval(self._parameters, x=self._xdata)
+        self._exo.setData(self._model.eval(self._parameters, x=self._xdata))
+        return self._exo
 
     def automaticGuess(self):
         print("i'm guessing by the book")
 
     def getCurrentParameterDict(self):
-        pdict = {self._model.prefix:
+        pdict = {self._modelprefix:
                  {'modeltype': 'quadraticModel',
                   'a': {'value': self.aValue.value(), 'vary': (not self.aFixedCB.isChecked())},
                   'b': {'value': self.bValue.value(), 'vary': (not self.bFixedCB.isChecked())},
@@ -128,3 +171,13 @@ class QuadraticParameterSettingDialog(parameterSettingDialog.ParameterSettingDia
 
     def getModel(self):
         return self._model
+
+    def _chooseColour(self):
+        self._qcd = QtGui.QColorDialog()
+        self._qcd.show()
+        self._qcd.currentColorChanged.connect(self._setColour)
+
+    def _setColour(self, colour):
+        self.setColour(colour)
+        self.colourDisplay.setStyleSheet(("background-color:"+str(colour.name())))
+        self.updateFit.emit()

@@ -16,14 +16,4 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor,
 # Boston, MA  02110-1301, USA.
 
-from . import models
-# from . import peakguesser.py
-from . import parameterSettingDialog
-from . import constantParameterSettingDialog
-from . import gaussianParameterSettingDialog
-from . import linearParameterSettingDialog
-from . import lorentzianParameterSettingDialog
-from . import quadraticParameterSettingDialog
-from . import shiftedhyperbolaParameterSettingDialog
-
-__version__ = "0.1.3"
+__version__ = "0.3.0"

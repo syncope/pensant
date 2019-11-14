@@ -1,4 +1,4 @@
-# Copyright (C) 2018  Christoph Rosemann, DESY, Notkestr. 85, D-22607 Hamburg
+# Copyright (C) 2018-9  Christoph Rosemann, DESY, Notkestr. 85, D-22607 Hamburg
 # email contact: christoph.rosemann@desy.de
 #
 # This program is free software; you can redistribute it and/or
@@ -16,15 +16,16 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor,
 # Boston, MA  02110-1301, USA.
 
-from . import parameterSettingDialog
+from . import parameterSettingWidget
+from PyQt4 import QtGui
 import numpy as np
 import math
 
 
-class GaussianParameterSettingDialog(parameterSettingDialog.ParameterSettingDialog):
+class GaussianParameterSettingWidget(parameterSettingWidget.ParameterSettingWidget):
 
-    def __init__(self, modelname, xdata, ydata, model, **kw):
-        super(GaussianParameterSettingDialog, self).__init__(**kw)
+    def __init__(self, model, xdata, ydata, **kw):
+        super(GaussianParameterSettingWidget, self).__init__(**kw)
         self.passData(xdata, ydata)
         self.meanValue.valueChanged.connect(self._updateMean)
         self.meanSlider.valueChanged.connect(self._updateMean)
@@ -32,23 +33,62 @@ class GaussianParameterSettingDialog(parameterSettingDialog.ParameterSettingDial
         self.maximumSlider.valueChanged.connect(self._updateMaximum)
         self.sigmaValue.valueChanged.connect(self._updateSigma)
         self.sigmaSlider.valueChanged.connect(self._updateSigma)
-        self._modelName = modelname
         self._model = model
         self._parameters = None
-        self._model.prefix = str("m" + str(self._index) + "_")
-        self.guessStartValuesBtn.hide()
-        self.configDonePushBtn.clicked.connect(self._guessingDone)
+        self._modelprefix = str("m" + str(self._name) + "_")
+        self._exo.setName(self._modelprefix)
+        self._setColour(self._exo.colour())
         self._checkMaxima()
+        self.useLBMean.hide()
+        self.useUBMean.hide()
+        self.meanLBValue.hide()
+        self.meanUBValue.hide()
+        self.useLBMaximum.hide()
+        self.useUBMaximum.hide()
+        self.maximumLBValue.hide()
+        self.maximumUBValue.hide()
+        self.useLBSigma.hide()
+        self.useUBSigma.hide()
+        self.sigmaLBValue.hide()
+        self.sigmaUBValue.hide()
+        self.extendButton.clicked.connect(self._togglehide)
+        self.chooseColourButton.clicked.connect(self._chooseColour)
+
+    def _togglehide(self):
+        if self.useLBMean.isHidden():
+            self.useLBMean.show()
+            self.useUBMean.show()
+            self.meanLBValue.show()
+            self.meanUBValue.show()
+            self.useLBMaximum.show()
+            self.useUBMaximum.show()
+            self.maximumLBValue.show()
+            self.maximumUBValue.show()
+            self.useLBSigma.show()
+            self.useUBSigma.show()
+            self.sigmaLBValue.show()
+            self.sigmaUBValue.show()
+            self.extendButton.setText("Shorten")
+        else:
+            self.useLBMean.hide()
+            self.useUBMean.hide()
+            self.meanLBValue.hide()
+            self.meanUBValue.hide()
+            self.useLBMaximum.hide()
+            self.useUBMaximum.hide()
+            self.maximumLBValue.hide()
+            self.maximumUBValue.hide()
+            self.useLBSigma.hide()
+            self.useUBSigma.hide()
+            self.sigmaLBValue.hide()
+            self.sigmaUBValue.hide()
+            self.extendButton.setText("Extend")
 
     def _checkMaxima(self):
         datamax = np.amax(self._ydata)
         if self.maximumValue.maximum() <= datamax:
             self.maximumValue.setMaximum(datamax*1000)
             self.maximumUBValue.setMaximum(datamax*1000)
-
-    def _guessingDone(self, **kw):
-        self.guessingDone.emit()
-        self.close(**kw)
 
     def _updateSigma(self, value):
         if isinstance(value, int):
@@ -135,7 +175,8 @@ class GaussianParameterSettingDialog(parameterSettingDialog.ParameterSettingDial
         self._parameters = self._model.make_params(center=self.meanValue.value(),
                                                    amplitude=self._conversionFactorMaximumToAmplitude() * self.maximumValue.value(),
                                                    sigma=self.sigmaValue.value())
-        return self._model.eval(self._parameters, x=self._xdata)
+        self._exo.setData(self._model.eval(self._parameters, x=self._xdata))
+        return self._exo
 
     def automaticGuess(self):
         print("i'm guessing by the book")
@@ -168,7 +209,7 @@ class GaussianParameterSettingDialog(parameterSettingDialog.ParameterSettingDial
         if (self.useUBMaximum.isChecked()):
             amplitudedict['max'] = self._conversionFactorMaximumToAmplitude() * self.maximumUBValue.value()
 
-        pdict = {self._model.prefix:
+        pdict = {self._modelprefix:
                  {'modeltype': 'gaussianModel',
                   'center': centerdict,
                   'sigma': sigmadict,
@@ -185,3 +226,13 @@ class GaussianParameterSettingDialog(parameterSettingDialog.ParameterSettingDial
 
     def _conversionFactorMaximumToAmplitude(self):
         return math.sqrt(2*math.pi)*self.sigmaValue.value()
+
+    def _chooseColour(self):
+        self._qcd = QtGui.QColorDialog()
+        self._qcd.show()
+        self._qcd.currentColorChanged.connect(self._setColour)
+
+    def _setColour(self, colour):
+        self.setColour(colour)
+        self.colourDisplay.setStyleSheet(("background-color:"+str(colour.name())))
+        self.updateFit.emit()

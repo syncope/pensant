@@ -39,6 +39,8 @@ class shiftedexponentialParameterSettingDialog(parameterSettingDialog.ParameterS
         self.guessStartValuesBtn.clicked.connect(print)
         self.guessStartValuesBtn.hide()
         self.configDonePushBtn.clicked.connect(self._guessingDone)
+        self.extendButton.clicked.connect(self._togglehide)
+        self.chooseColourButton.clicked.connect(self._chooseColour)
 
     def _guessingDone(self, **kw):
         self.guessingDone.emit()

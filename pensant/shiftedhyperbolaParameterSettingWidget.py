@@ -16,26 +16,56 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor,
 # Boston, MA  02110-1301, USA.
 
-from . import parameterSettingDialog
+from . import parameterSettingWidget
+from PyQt4 import QtGui
 import numpy as np
-import math
 
 
-class shiftedhyperbolaParameterSettingDialog(parameterSettingDialog.ParameterSettingDialog):
+class shiftedhyperbolaParameterSettingWidget(parameterSettingWidget.ParameterSettingWidget):
 
-    def __init__(self, modelname, xdata, ydata, model=None, **kw):
-        super(shiftedhyperbolaParameterSettingDialog, self).__init__(**kw)
+    def __init__(self, model, xdata, ydata, **kw):
+        super(shiftedhyperbolaParameterSettingWidget, self).__init__(**kw)
         self.passData(xdata, ydata)
-        
+
         self.aSlider.valueChanged.connect(self._aScaler)
         self.xzeroSlider.valueChanged.connect(self._xzeroScaler)
-        self._modelName = modelname
+        self._modelprefix = str("m" + str(self._name) + "_")
         self._model = model
-        #~ self._model.prefix = "m" + str(self._index) + "_"
+        self._exo.setName(self._modelprefix)
+        self._setColour(self._exo.colour())
         self._parameters = None
-        self.guessStartValuesBtn.clicked.connect(print)
-        self.guessStartValuesBtn.hide()
-        self.configDonePushBtn.clicked.connect(self._guessingDone)
+        self.useLBA.hide()
+        self.useUBA.hide()
+        self.aLBValue.hide()
+        self.aUBValue.hide()
+        self.useLBxzero.hide()
+        self.useUBxzero.hide()
+        self.xzeroLBValue.hide()
+        self.xzeroUBValue.hide()
+        self.extendButton.clicked.connect(self._togglehide)
+        self.chooseColourButton.clicked.connect(self._chooseColour)
+
+    def _togglehide(self):
+        if self.useLBA.isHidden():
+            self.useLBA.show()
+            self.useUBA.show()
+            self.aLBValue.show()
+            self.aUBValue.show()
+            self.useLBxzero.show()
+            self.useUBxzero.show()
+            self.xzeroLBValue.show()
+            self.xzeroUBValue.show()
+            self.extendButton.setText("Shorten")
+        else:
+            self.useLBA.hide()
+            self.useUBA.hide()
+            self.aLBValue.hide()
+            self.aUBValue.hide()
+            self.useLBxzero.hide()
+            self.useUBxzero.hide()
+            self.xzeroLBValue.hide()
+            self.xzeroUBValue.hide()
+            self.extendButton.setText("Extend")
 
     def _guessingDone(self, **kw):
         self.guessingDone.emit()
@@ -47,20 +77,6 @@ class shiftedhyperbolaParameterSettingDialog(parameterSettingDialog.ParameterSet
         self._xzeroBounds = (0., 2*self._xzeroDisplay)
         self._aDisplay = 1.
         self._aBounds = (0., 2*float(np.amax(self._ydata)))
-
-        # first fix the accuracy of the display
-        # number of steps;
-        #~ xzeroStep =(self._xzeroBounds[1] - self._xzeroBounds[0])/(self.xzeroSlider.maximum()-self.xzeroSlider.minimum())
-        #~ xzeroAcc = math.floor(math.fabs(math.log10(xzeroStep)))+2
-        #~ self.xzeroValue.setDecimals(xzeroAcc)
-        #~ self.xzeroLBValue.setDecimals(xzeroAcc)
-        #~ self.xzeroUBValue.setDecimals(xzeroAcc)
-#~
-        #~ aStep =(self._aBounds[1] - self._aBounds[0])/(self.aSlider.maximum()-self.aSlider.minimum())
-        #~ aAcc = math.floor(math.fabs(math.log10(aStep)))+2
-        #~ self.aValue.setDecimals(aAcc)
-        #~ self.aLBValue.setDecimals(aAcc)
-        #~ self.aUBValue.setDecimals(aAcc)
 
         # now set initial values
         self.xzeroValue.setValue(self._xzeroDisplay)
@@ -90,7 +106,8 @@ class shiftedhyperbolaParameterSettingDialog(parameterSettingDialog.ParameterSet
 
     def getCurrentFitData(self):
         self._parameters = self._model.make_params(a=self.aValue.value(), xzero=self.xzeroValue.value())
-        return self._model.eval(self._parameters, x=self._xdata)
+        self._exo.setData(self._model.eval(self._parameters, x=self._xdata))
+        return self._exo
 
     def automaticGuess(self):
         print("i'm guessing by the book")
@@ -109,3 +126,13 @@ class shiftedhyperbolaParameterSettingDialog(parameterSettingDialog.ParameterSet
 
     def getModel(self):
         return self._model
+
+    def _chooseColour(self):
+        self._qcd = QtGui.QColorDialog()
+        self._qcd.show()
+        self._qcd.currentColorChanged.connect(self._setColour)
+
+    def _setColour(self, colour):
+        self.setColour(colour)
+        self.colourDisplay.setStyleSheet(("background-color:"+str(colour.name())))
+        self.updateFit.emit()

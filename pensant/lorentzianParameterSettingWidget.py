@@ -1,4 +1,4 @@
-# Copyright (C) 2018  Christoph Rosemann, DESY, Notkestr. 85, D-22607 Hamburg
+# Copyright (C) 2018-9  Christoph Rosemann, DESY, Notkestr. 85, D-22607 Hamburg
 # email contact: christoph.rosemann@desy.de
 #
 # This program is free software; you can redistribute it and/or
@@ -16,27 +16,69 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor,
 # Boston, MA  02110-1301, USA.
 
-from . import parameterSettingDialog
+from . import parameterSettingWidget
+from PyQt4 import QtGui
 import numpy as np
 import math
 
 
-class LorentzianParameterSettingDialog(parameterSettingDialog.ParameterSettingDialog):
+class LorentzianParameterSettingWidget(parameterSettingWidget.ParameterSettingWidget):
 
-    def __init__(self, modelname, xdata, ydata, model=None, **kw):
-        super(LorentzianParameterSettingDialog, self).__init__(**kw)
+    def __init__(self, model, xdata, ydata, **kw):
+        super(LorentzianParameterSettingWidget, self).__init__(**kw)
         self.passData(xdata, ydata)
         self.centerSlider.valueChanged.connect(self._centerScaler)
         self.amplitudeSlider.valueChanged.connect(self._ampScaler)
         self.sigmaSlider.valueChanged.connect(self._sigmaScaler)
-        self._modelName = modelname
+        self._modelprefix = str("m" + str(self._name) + "_")
         self._model = model
-        self._model.prefix = "m" + str(self._index) + "_"
-        self._parameters = None
-        self.guessStartValuesBtn.clicked.connect(print)
-        self.guessStartValuesBtn.hide()
-        self.configDonePushBtn.clicked.connect(self._guessingDone)
+        self._exo.setName(self._modelprefix)
+        self._setColour(self._exo.colour())
         self._checkMaxima()
+        self.useLBCenter.hide()
+        self.useUBCenter.hide()
+        self.centerLBValue.hide()
+        self.centerUBValue.hide()
+        self.useLBAmplitude.hide()
+        self.useUBAmplitude.hide()
+        self.amplitudeLBValue.hide()
+        self.amplitudeUBValue.hide()
+        self.useLBSigma.hide()
+        self.useUBSigma.hide()
+        self.sigmaLBValue.hide()
+        self.sigmaUBValue.hide()
+        self.extendButton.clicked.connect(self._togglehide)
+        self.chooseColourButton.clicked.connect(self._chooseColour)
+
+    def _togglehide(self):
+        if self.useLBCenter.isHidden():
+            self.useLBCenter.show()
+            self.useUBCenter.show()
+            self.centerLBValue.show()
+            self.centerUBValue.show()
+            self.useLBAmplitude.show()
+            self.useUBAmplitude.show()
+            self.amplitudeLBValue.show()
+            self.amplitudeUBValue.show()
+            self.useLBSigma.show()
+            self.useUBSigma.show()
+            self.sigmaLBValue.show()
+            self.sigmaUBValue.show()
+            self.extendButton.setText("Shorten")
+        else:
+            self.useLBCenter.hide()
+            self.useUBCenter.hide()
+            self.centerLBValue.hide()
+            self.centerUBValue.hide()
+            self.useLBAmplitude.hide()
+            self.useUBAmplitude.hide()
+            self.amplitudeLBValue.hide()
+            self.amplitudeUBValue.hide()
+            self.useLBSigma.hide()
+            self.useUBSigma.hide()
+            self.sigmaLBValue.hide()
+            self.sigmaUBValue.hide()
+            self.extendButton.setText("Extend")
 
     def _checkMaxima(self):
         datamax = np.amax(self._ydata)
@@ -115,13 +157,14 @@ class LorentzianParameterSettingDialog(parameterSettingDialog.ParameterSettingDi
 
     def getCurrentFitData(self):
         self._parameters = self._model.make_params(center=self.centerValue.value(), amplitude=self.amplitudeValue.value(), sigma=self.sigmaValue.value())
-        return self._model.eval(self._parameters, x=self._xdata)
+        self._exo.setData(self._model.eval(self._parameters, x=self._xdata))
+        return self._exo
 
     def automaticGuess(self):
         print("i'm guessing by the book")
 
     def getCurrentParameterDict(self):
-        pdict = {self._model.prefix:
+        pdict = {self._modelprefix:
                  {'modeltype': 'lorentzianModel',
                   'center': {'value': self.centerValue.value(), 'vary': (not self.centerFixedCB.isChecked())},
                   'sigma': {'value': self.sigmaValue.value(), 'vary': (not self.sigmaFixedCB.isChecked())},
@@ -135,3 +178,13 @@ class LorentzianParameterSettingDialog(parameterSettingDialog.ParameterSettingDi
 
     def getModel(self):
         return self._model
+
+    def _chooseColour(self):
+        self._qcd = QtGui.QColorDialog()
+        self._qcd.show()
+        self._qcd.currentColorChanged.connect(self._setColour)
+
+    def _setColour(self, colour):
+        self.setColour(colour)
+        self.colourDisplay.setStyleSheet(("background-color:"+str(colour.name())))
+        self.updateFit.emit()
