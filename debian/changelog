@@ -1,4 +1,4 @@
-pensant (0.3.-1+deb9u5~fsec) stretch; urgency=low
+pensant (0.3.0-1+deb9u5~fsec) stretch; urgency=low
 
   * Designed and implemented entirely new setup and configuration handling.
 
