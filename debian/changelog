@@ -1,3 +1,10 @@
+pensant (0.3.1-1+deb9u5~fsec) stretch; urgency=low
+
+  * Bug fix: changed creation of "auto-Gauss" parameters, so that the
+    covariance is also available in the result.
+
+ -- Christoph Rosemann <christoph.rosemann@desy.de>  Wed, 4 Dec 2019 11:18:00 +0100
+
 pensant (0.3.0-1+deb9u5~fsec) stretch; urgency=low
 
   * Designed and implemented entirely new setup and configuration handling.
