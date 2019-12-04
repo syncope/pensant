@@ -64,14 +64,13 @@ class gaussian(GaussianModel):
 
     def gaussguess(self, xdata, ydata):
         guesser = peakGuesser()
-        params = Parameters()
         guessparams = guesser.guessMeanFwhmSigmaHeightAmplitude(xdata, ydata)
-        params.add_many(('m0_center', guessparams[0]),
-                        ('m0_fwhm', guessparams[1]),
-                        ('m0_sigma', guessparams[2]),
-                        ('m0_height', guessparams[3]),
-                        ('m0_amplitude', guessparams[4]))
-        return params
+        # parameters need to be created with "make_params", otherwise the covariance will be zero
+        return self.make_params(m0_center=guessparams[0],
+                                m0_fwhm=guessparams[1],
+                                m0_sigma=guessparams[2],
+                                m0_height=guessparams[3],
+                                m0_amplitude=guessparams[4])
 
 
 class lorentzian(LorentzianModel):
